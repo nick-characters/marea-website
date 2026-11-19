@@ -45,7 +45,7 @@ Risk: expressive motion is the most time-hungry part. If time gets tight, the sc
 - [x] 4. Foundation (tokens, fonts, primitives, base layout, motion utilities, `/styleguide`)
 - [~] 5. Integrations: form endpoint, Resend templates, Turnstile, env schema, GA4 and Cloudflare config done and tested locally. **Blocked:** GitHub push (account not linked), Cloudflare preview deploy, live keys.
 - [x] 6. Build: Home → Residences → Amenity → Location → Team → Privacy → 404 (+ /brochure, /thank-you)
-- [ ] 7. QA and tidy-up (tokens/lint/build, breakpoint sweep 375/768/1024/1440/1920, a11y, reduced motion, Lighthouse mobile)
+- [~] 7. QA: tokens, lint, astro check and build pass. Breakpoint sweep (320–1920) on 9 routes shows no overflow or console errors. Motion test confirms nothing is left hidden after scrolling. Reduced motion, form states and the menu were verified. **Still to do with real assets:** Lighthouse, real-device testing, final visual pass against Figma.
 - [ ] 8. Handover (README, launch checklist, DNS records, remaining placeholders)
 
 ## Component inventory
