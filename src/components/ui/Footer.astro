@@ -1,0 +1,45 @@
+---
+import { site, telHref } from "@/data/site";
+import Container from "@/components/primitives/Container.astro";
+import Section from "@/components/primitives/Section.astro";
+import Text from "@/components/primitives/Text.astro";
+import Logo from "@/components/primitives/Logo.astro";
+---
+<Section as="footer" theme="burgundy" class="py-15">
+  <Container>
+    <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-15" data-stagger>
+      <div class="flex flex-col gap-4">
+        <Text size="label" class="text-neutral-300">Designed &amp; developed by</Text>
+        <Logo name="placeco" class="w-34 text-sand" />
+      </div>
+      <div class="flex flex-col gap-4">
+        <Text size="label" class="text-neutral-300">Sales agent</Text>
+        <Logo name="property-collective" class="w-27 text-sand" />
+      </div>
+      <div class="flex flex-col gap-6">
+        <Text size="label" class="text-neutral-300">Contact</Text>
+        {
+          site.agents.map((agent) => (
+            <div class="flex flex-col gap-1">
+              <Text weight="light" class="text-sand">{agent.name}</Text>
+              <a href={telHref(agent.phone)} class="text-body text-powder hover:underline">{agent.phone}</a>
+            </div>
+          ))
+        }
+      </div>
+      <div class="flex flex-col gap-6">
+        <Text size="label" class="text-neutral-300">Property</Text>
+        <Text as="address" class="text-powder">{site.address.line1}<br />{site.address.line2}</Text>
+      </div>
+    </div>
+    <div class="hairline my-10 bg-sand"></div>
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-4 lg:gap-15">
+      <Text size="fine" class="text-sand lg:col-span-2">{site.disclaimer}</Text>
+      <a href={telHref(site.primaryPhone)} class="text-body text-powder hover:underline">{site.primaryPhone}</a>
+      <Text size="label" class="text-neutral-300">
+        {site.credit.text}{" "}
+        <a href={site.credit.href} target="_blank" rel="noopener" class="text-accent underline underline-offset-2 hover:text-powder">{site.credit.linkText}</a>
+      </Text>
+    </div>
+  </Container>
+</Section>

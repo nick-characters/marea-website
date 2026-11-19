@@ -1,0 +1,13 @@
+---
+interface Props {
+  gap?: "xs" | "sm" | "md" | "field" | "lg" | "xl";
+  align?: "start" | "center" | "stretch";
+  as?: "div" | "ul" | "ol";
+  class?: string;
+  [key: `data-${string}`]: unknown;
+}
+const { gap = "md", align = "start", as: Tag = "div", class: cls, ...rest } = Astro.props;
+const gaps = { xs: "gap-2", sm: "gap-4", md: "gap-6", field: "gap-5", lg: "gap-stack-lg", xl: "gap-15" };
+const aligns = { start: "items-start", center: "items-center", stretch: "items-stretch" };
+---
+<Tag class:list={["flex flex-col", gaps[gap], aligns[align], cls]} {...rest}><slot /></Tag>

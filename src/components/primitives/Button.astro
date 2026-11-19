@@ -1,0 +1,32 @@
+---
+/** Leaf-shaped pill buttons from the style frame. Renders <a> when href is given. */
+interface Props {
+  variant?: "primary" | "outline" | "submit";
+  href?: string;
+  type?: "button" | "submit";
+  class?: string;
+  [key: string]: unknown;
+}
+const { variant = "primary", href, type = "button", class: cls, ...rest } = Astro.props;
+const base =
+  "group/btn relative inline-flex items-center justify-center overflow-hidden whitespace-nowrap transition-colors duration-fast ease-tide focus-visible:outline-2";
+const variants = {
+  primary: "rounded-tl-leaf rounded-br-leaf bg-powder text-brand px-6 py-3 font-body text-button uppercase hover:bg-brand hover:text-sand",
+  outline:
+    "rounded-tl-leaf rounded-br-leaf border border-powder px-6 py-3 font-body text-button uppercase hover:bg-powder hover:text-brand",
+  submit:
+    "rounded-tl-leaf-lg rounded-br-leaf-lg bg-brand text-sand w-full h-13 px-12 font-display text-submit uppercase hover:bg-moss disabled:opacity-60 disabled:cursor-progress",
+};
+const classes = [base, variants[variant], cls];
+---
+{
+  href ? (
+    <a href={href} class:list={classes} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class:list={classes} {...rest}>
+      <slot />
+    </button>
+  )
+}

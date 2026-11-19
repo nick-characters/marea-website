@@ -1,0 +1,277 @@
+@import "tailwindcss";
+@import "@fontsource/poppins/latin-300.css";
+@import "@fontsource/poppins/latin-400.css";
+@import "@fontsource/poppins/latin-400-italic.css";
+@import "@fontsource/poppins/latin-500.css";
+
+/* ------------------------------------------------------------------
+   Fonts
+   PP Hatton Medium: supplied WOFF2 (Pangram Pangram, web licence confirmed 19 Nov).
+   Light/Bold are kept in src/assets/fonts but not loaded (unused in the design).
+   Fallback faces are metric-adjusted to limit layout shift on swap.
+------------------------------------------------------------------ */
+@font-face {
+  font-family: "PP Hatton";
+  src: url("../assets/fonts/PPHatton-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PP Hatton Fallback";
+  src: local("Georgia"), local("Times New Roman");
+  ascent-override: 86%;
+  descent-override: 30%;
+  line-gap-override: 10%;
+  size-adjust: 100%;
+}
+@font-face {
+  font-family: "Poppins Fallback";
+  src: local("Arial"), local("Helvetica");
+  ascent-override: 93.62%;
+  descent-override: 31.21%;
+  line-gap-override: 8.92%;
+  size-adjust: 112.16%;
+}
+
+@theme {
+  /* Remove Tailwind defaults the Marea system replaces. Spacing, breakpoints and
+     container widths keep Tailwind defaults (approved 19 Nov). */
+  --color-*: initial;
+  --font-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --ease-*: initial;
+
+  /* Colour: Figma variables (color/*) */
+  --color-burgundy-400: #481f15;
+  --color-moss-300: #544c2b;
+  --color-eucalyptus-300: #919169;
+  --color-powder-200: #cfe2ec;
+  --color-powder-300: #b1c9d5;
+  --color-neutral-50: #f7f3ea;
+  --color-neutral-100: #e5ddca;
+  --color-neutral-300: #b6afa1;
+  --color-neutral-500: #7f7970;
+  --color-neutral-600: #645e58;
+  --color-neutral-800: #2f2b28;
+  --color-neutral-900: #181513;
+
+  /* Colour: semantic roles */
+  --color-brand: var(--color-burgundy-400);
+  --color-sand: var(--color-neutral-100);
+  --color-cream: var(--color-neutral-50);
+  --color-moss: var(--color-moss-300);
+  --color-powder: var(--color-powder-300);
+  --color-field: var(--color-powder-200);
+  --color-ink: var(--color-neutral-900);
+  --color-ink-soft: var(--color-neutral-800);
+  --color-muted: var(--color-neutral-500);
+  --color-rule: var(--color-neutral-300);
+  --color-accent: var(--color-eucalyptus-300);
+
+  /* Typography: families */
+  --font-display: "PP Hatton", "PP Hatton Fallback", Georgia, serif;
+  --font-body: "Poppins", "Poppins Fallback", ui-sans-serif, system-ui, sans-serif;
+
+  /* Typography: Figma text styles (Web/*), fluid 375 → 1440 (see DESIGN-SYSTEM.md) */
+  --text-display: clamp(3.5rem, 2.092rem + 6.009vw, 7.5rem);
+  --text-display--line-height: 1.1;
+  --text-title: clamp(2.5rem, 1.972rem + 2.254vw, 4rem);
+  --text-title--line-height: 1.2;
+  --text-headline: clamp(1.75rem, 1.486rem + 1.127vw, 2.5rem);
+  --text-headline--line-height: 1.4;
+  --text-subheading: clamp(1.25rem, 1.162rem + 0.376vw, 1.5rem);
+  --text-subheading--line-height: 1.4;
+  --text-statement: clamp(1.25rem, 1.162rem + 0.376vw, 1.5rem);
+  --text-statement--line-height: 1.5;
+  --text-strong: clamp(1.125rem, 1.081rem + 0.188vw, 1.25rem);
+  --text-strong--line-height: 1.2;
+  --text-strong--font-weight: 500;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.5;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1;
+  --text-label--letter-spacing: 0.1em;
+  --text-button: 0.875rem;
+  --text-button--line-height: 1;
+  --text-button--letter-spacing: 0.04em;
+  --text-button--font-weight: 500;
+  --text-submit: 0.9375rem;
+  --text-submit--line-height: 1;
+  --text-fine: 0.625rem;
+  --text-fine--line-height: 1.4;
+
+  /* Spacing: named rhythm tokens (fluid 375 → 1440); numeric 4px scale stays available */
+  --spacing-gutter: clamp(1.25rem, -0.07rem + 5.634vw, 5rem);
+  --spacing-band: clamp(5rem, 3.239rem + 7.512vw, 10rem);
+  --spacing-split: clamp(3rem, 2.296rem + 3.005vw, 5rem);
+  --spacing-stack-lg: clamp(2rem, 1.824rem + 0.751vw, 2.5rem);
+  --spacing-hero-gap: clamp(3rem, 0.887rem + 9.014vw, 8rem);
+  --spacing-field: 2.5rem;
+
+  /* Layout widths */
+  --container-frame: 90rem; /* 1440: design frame, caps full-bleed splits on very wide screens */
+  --container-content: 80rem; /* 1280 = 1440 − 2 × 80 gutter */
+  --container-narrow: 30rem; /* 480: form, statement */
+  --container-prose: 25rem; /* 400: split body copy */
+  --container-agent: 15rem; /* 240: agent cards */
+  --container-wordmark: 36rem; /* 576: home hero wordmark */
+  --container-logo-sm: 8.0555rem; /* 128.9: nav logo */
+
+  /* Aspect ratios from Figma frames */
+  --aspect-band: 1440 / 1024;
+  --aspect-band-tablet: 4 / 3;
+  --aspect-band-mobile: 4 / 5;
+  --aspect-arch: 358 / 652;
+  --aspect-map: 1440 / 788;
+  --aspect-wordmark: 1238 / 517;
+
+  /* Shape */
+  --radius-leaf: 2rem;
+  --radius-leaf-lg: 6.25rem;
+  --radius-full: calc(infinity * 1px);
+  --radius-arch: 50rem;
+
+  /* Motion */
+  --ease-tide: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 200ms;
+  --duration-base: 600ms;
+  --duration-slow: 1200ms;
+  --duration-tide: 1800ms;
+
+  /* Layers */
+  --z-nav: 40;
+  --z-menu: 50;
+  --z-skip: 60;
+}
+
+/* ------------------------------------------------------------------
+   Base
+------------------------------------------------------------------ */
+@layer base {
+  html {
+    background: var(--color-sand);
+    color: var(--color-brand);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto;
+  }
+  body {
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    min-height: 100dvh;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-powder);
+    color: var(--color-brand);
+  }
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+  [id] {
+    scroll-margin-top: var(--spacing-gutter);
+  }
+}
+
+/* ------------------------------------------------------------------
+   System utilities
+------------------------------------------------------------------ */
+@utility hairline {
+  height: 1px;
+}
+@utility rule {
+  height: 2px;
+}
+@utility z-nav {
+  z-index: var(--z-nav);
+}
+@utility z-menu {
+  z-index: var(--z-menu);
+}
+@utility z-skip {
+  z-index: var(--z-skip);
+}
+@utility duration-fast {
+  transition-duration: var(--duration-fast);
+}
+@utility duration-base {
+  transition-duration: var(--duration-base);
+}
+
+/* Motion pre-states: only applied when JS has booted (html.js) and motion is allowed,
+   so content is never hidden if scripts fail. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal],
+  html.js [data-stagger] > *,
+  html.js [data-split],
+  html.js [data-statement],
+  html.js [data-hero-title],
+  html.js [data-hero-fade],
+  html.js [data-hero-arch] {
+    opacity: 0;
+  }
+  html.js [data-mask] {
+    clip-path: inset(100% 0 0 0);
+  }
+  html.js [data-hero-wordmark] {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+/* Page transition: a burgundy tide rising over the old page (View Transitions API) */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: var(--duration-slow) var(--ease-tide) both mr-fade-out;
+  }
+  ::view-transition-new(root) {
+    animation: var(--duration-slow) var(--ease-tide) both mr-tide-in;
+  }
+}
+@keyframes mr-fade-out {
+  to {
+    opacity: 0.4;
+    transform: translateY(-4%);
+  }
+}
+@keyframes mr-tide-in {
+  from {
+    clip-path: inset(100% 0 0 0 round var(--radius-leaf-lg) 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms;
+    animation-iteration-count: 1;
+    transition-duration: 1ms;
+    scroll-behavior: auto;
+  }
+}

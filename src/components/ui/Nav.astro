@@ -1,0 +1,48 @@
+---
+import { site } from "@/data/site";
+import Link from "@/components/primitives/Link.astro";
+import Logo from "@/components/primitives/Logo.astro";
+import Icon from "@/components/primitives/Icon.astro";
+
+interface Props {
+  /** home: links right, no logo (wordmark sits in the hero). default: links left, logo right. */
+  layout?: "home" | "default";
+  /** light: powder text (on burgundy). dark: burgundy text (on sand or light imagery). */
+  tone?: "light" | "dark";
+}
+const { layout = "default", tone = "dark" } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+---
+<nav
+  aria-label="Primary"
+  data-nav
+  class:list={["relative flex w-full items-center justify-between gap-8", tone === "light" ? "text-powder" : "text-brand"]}
+>
+  <ul class:list={["hidden items-center gap-8 lg:flex", layout === "home" && "ml-auto"]}>
+    {
+      site.nav.map((item) => (
+        <li>
+          <Link href={item.href} variant="nav" current={path === item.href}>
+            {item.label}
+          </Link>
+        </li>
+      ))
+    }
+  </ul>
+  {
+    layout === "default" && (
+      <a href="/" class="block w-28 lg:w-logo-sm" aria-label="Marea home">
+        <Logo name="marea-logo" />
+      </a>
+    )
+  }
+  <button
+    type="button"
+    data-menu-open
+    aria-haspopup="dialog"
+    aria-controls="site-menu"
+    class:list={["-mr-2 flex items-center gap-3 p-2 text-label uppercase lg:hidden", layout === "home" && "ml-auto"]}
+  >
+    Menu <Icon name="menu" />
+  </button>
+</nav>

@@ -1,0 +1,45 @@
+---
+/**
+ * Brand logos. Drop SVGs into src/assets/logos/<name>.svg (use currentColor fills to inherit
+ * the section colour). Until then a typeset fallback stands in.
+ */
+import { getSvg } from "@/lib/media";
+interface Props {
+  name: "marea-wordmark" | "marea-logo" | "placeco" | "property-collective";
+  class?: string;
+  label?: string;
+}
+const { name, class: cls, label } = Astro.props;
+const svg = getSvg("logos", name);
+const names = {
+  "marea-wordmark": "Marea Batemans Bay",
+  "marea-logo": "Marea",
+  placeco: "Place Co",
+  "property-collective": "The Property Collective",
+};
+const a11y = label ?? names[name];
+---
+{
+  svg ? (
+    <span role="img" aria-label={a11y} class:list={["block [&>svg]:h-auto [&>svg]:w-full", cls]} set:html={svg} />
+  ) : name === "marea-wordmark" ? (
+    <span role="img" aria-label={a11y} data-logo-fallback class:list={["flex flex-col items-center", cls]}>
+      <span class="font-display text-display leading-none uppercase">Marea</span>
+      <span class="mt-3 text-subheading tracking-widest uppercase">Batemans Bay</span>
+    </span>
+  ) : name === "marea-logo" ? (
+    <span role="img" aria-label={a11y} data-logo-fallback class:list={["font-display text-headline leading-none uppercase", cls]}>
+      Marea
+    </span>
+  ) : name === "placeco" ? (
+    <span role="img" aria-label={a11y} data-logo-fallback class:list={["font-body text-headline font-light tracking-wide leading-none uppercase", cls]}>
+      Place\Co
+    </span>
+  ) : (
+    <span role="img" aria-label={a11y} data-logo-fallback class:list={["flex flex-col text-label font-medium uppercase leading-tight", cls]}>
+      <span>The Property</span>
+      <span>Collective</span>
+      <span class="font-light">Projects</span>
+    </span>
+  )
+}

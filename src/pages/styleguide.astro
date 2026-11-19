@@ -1,0 +1,85 @@
+---
+/* Living style guide: renders the token system so it can be checked against Figma. noindex; remove or gate before launch. */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/primitives/Section.astro";
+import Container from "@/components/primitives/Container.astro";
+import Heading from "@/components/primitives/Heading.astro";
+import Text from "@/components/primitives/Text.astro";
+import Button from "@/components/primitives/Button.astro";
+import Placeholder from "@/components/primitives/Placeholder.astro";
+import Logo from "@/components/primitives/Logo.astro";
+import Input from "@/components/ui/form/Input.astro";
+import Select from "@/components/ui/form/Select.astro";
+import { buyerTypes } from "@/data/brochure";
+
+const colours = [
+  ["burgundy-400", "bg-burgundy-400", "text-sand"],
+  ["moss-300", "bg-moss-300", "text-cream"],
+  ["eucalyptus-300", "bg-eucalyptus-300", "text-ink"],
+  ["powder-200", "bg-powder-200", "text-ink"],
+  ["powder-300", "bg-powder-300", "text-ink"],
+  ["neutral-50", "bg-neutral-50", "text-ink"],
+  ["neutral-100", "bg-neutral-100", "text-ink"],
+  ["neutral-300", "bg-neutral-300", "text-ink"],
+  ["neutral-500", "bg-neutral-500", "text-cream"],
+  ["neutral-600", "bg-neutral-600", "text-cream"],
+  ["neutral-800", "bg-neutral-800", "text-cream"],
+  ["neutral-900", "bg-neutral-900", "text-cream"],
+];
+const type = ["display", "title", "headline", "subheading", "statement", "strong"] as const;
+const text = ["body", "body-sm", "label", "button", "fine"] as const;
+const spacing = [
+  ["gutter", "w-gutter"],
+  ["band", "w-band"],
+  ["split", "w-split"],
+  ["stack-lg", "w-stack-lg"],
+  ["hero-gap", "w-hero-gap"],
+];
+---
+<BaseLayout title="Style guide" noindex>
+  <main id="main">
+    <Section theme="sand" space="split">
+      <Container>
+        <div class="flex flex-col gap-20">
+          <Heading as="h1" size="title">Style guide</Heading>
+
+          <div class="flex flex-col gap-6">
+            <Text size="label">Colour (Figma variables)</Text>
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6">
+              {colours.map(([name, bg, fg]) => <div class:list={["flex aspect-square items-end p-3", bg, fg]}><Text size="label">{name}</Text></div>)}
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-6">
+            <Text size="label">Type scale (resize the window to see fluid sizes)</Text>
+            {type.map((s) => <div class="flex flex-col gap-1"><Text size="fine" class="text-muted">{s}</Text><Heading as="p" size={s}>Marea Batemans Bay</Heading></div>)}
+            {text.map((s) => <div class="flex flex-col gap-1"><Text size="fine" class="text-muted">{s}</Text><Text size={s}>Set on the waterfront of Batemans Bay, Marea is a composition of six uniquely crafted residences.</Text></div>)}
+          </div>
+
+          <div class="flex flex-col gap-6">
+            <Text size="label">Spacing tokens</Text>
+            {spacing.map(([name, w]) => <div class="flex items-center gap-6"><Text size="fine" class="w-20">{name}</Text><div class:list={["h-4 bg-brand", w]}></div></div>)}
+          </div>
+
+          <div class="flex flex-col gap-6">
+            <Text size="label">Buttons</Text>
+            <div class="flex flex-wrap items-center gap-6"><Button>Button</Button><Button variant="outline">Button</Button></div>
+            <div class="max-w-narrow"><Button variant="submit">Request Brochure</Button></div>
+          </div>
+
+          <div class="flex max-w-narrow flex-col gap-5 bg-powder p-10">
+            <Text size="label">Form fields</Text>
+            <Input name="sg-first" label="First name" placeholder="Jane" />
+            <Select name="sg-buyer" label="Buyer type" options={buyerTypes} />
+          </div>
+
+          <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
+            <div class="flex flex-col gap-2"><Text size="label">Placeholder · square</Text><div class="aspect-square"><Placeholder label="Square image" /></div></div>
+            <div class="flex flex-col gap-2"><Text size="label">Placeholder · arch</Text><div class="aspect-arch overflow-hidden rounded-arch"><Placeholder label="Arch" tone="dark" /></div></div>
+            <div class="flex flex-col gap-2 bg-brand p-6 text-sand"><Text size="label">Logo fallbacks</Text><Logo name="marea-logo" /><Logo name="placeco" /><Logo name="property-collective" /></div>
+          </div>
+        </div>
+      </Container>
+    </Section>
+  </main>
+</BaseLayout>

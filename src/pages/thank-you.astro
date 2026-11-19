@@ -1,0 +1,25 @@
+---
+/* No-JS form success destination. With JS, success shows inline instead. */
+import PageLayout from "@/layouts/PageLayout.astro";
+import Section from "@/components/primitives/Section.astro";
+import Container from "@/components/primitives/Container.astro";
+import Heading from "@/components/primitives/Heading.astro";
+import Text from "@/components/primitives/Text.astro";
+import Button from "@/components/primitives/Button.astro";
+import Nav from "@/components/ui/Nav.astro";
+import { brochureCopy } from "@/data/brochure";
+---
+<PageLayout title="Thank you" noindex brochure={false}>
+  <Section slot="hero" as="header" theme="sand">
+    <Container class="py-6 lg:py-10"><Nav /></Container>
+  </Section>
+  <Section theme="powder" space="band">
+    <Container width="narrow">
+      <div class="flex flex-col items-start gap-stack-lg">
+        <Heading as="h1" size="title" data-split>{brochureCopy.success.heading}</Heading>
+        <Text class="text-ink-soft" data-reveal>{brochureCopy.success.body}</Text>
+        <div data-reveal="0.1"><Button href="/">Back to home</Button></div>
+      </div>
+    </Container>
+  </Section>
+</PageLayout>

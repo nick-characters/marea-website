@@ -1,0 +1,19 @@
+---
+interface Props {
+  as?: "p" | "span" | "div" | "li" | "address" | "small" | "h1" | "h2";
+  size?: "body" | "body-sm" | "label" | "fine" | "button";
+  weight?: "light" | "regular" | "medium";
+  class?: string;
+  [key: `data-${string}`]: unknown;
+}
+const { as: Tag = "p", size = "body", weight, class: cls, ...rest } = Astro.props;
+const sizes = {
+  body: "text-body",
+  "body-sm": "text-body-sm",
+  label: "text-label uppercase",
+  fine: "text-fine",
+  button: "text-button uppercase",
+};
+const weights = { light: "font-light", regular: "font-normal", medium: "font-medium" };
+---
+<Tag class:list={[sizes[size], weight && weights[weight], "not-italic", cls]} {...rest}><slot /></Tag>

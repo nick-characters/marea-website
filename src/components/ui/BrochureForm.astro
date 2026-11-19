@@ -1,0 +1,169 @@
+---
+import { PUBLIC_TURNSTILE_SITE_KEY } from "astro:env/client";
+import { brochureCopy, buyerTypes, referralSources } from "@/data/brochure";
+import Button from "@/components/primitives/Button.astro";
+import Heading from "@/components/primitives/Heading.astro";
+import Text from "@/components/primitives/Text.astro";
+import Input from "./form/Input.astro";
+import Select from "./form/Select.astro";
+---
+<div data-brochure class="w-full">
+  <form
+    method="post"
+    action="/api/brochure"
+    novalidate
+    data-brochure-form
+    class="flex w-full flex-col gap-15"
+  >
+    <div class="flex flex-col gap-5" data-stagger>
+      <Input name="firstName" label="First name" placeholder="Jane" autocomplete="given-name" maxlength={80} />
+      <Input name="surname" label="Surname" placeholder="Appleseed" autocomplete="family-name" maxlength={80} />
+      <Input name="email" label="Email" type="email" placeholder="email@email.com" autocomplete="email" inputmode="email" maxlength={160} />
+      <Input name="phone" label="Phone" type="tel" placeholder="+61 0400 000 000" autocomplete="tel" inputmode="tel" maxlength={24} />
+      <Input name="postcode" label="Postcode" placeholder="2600" autocomplete="postal-code" inputmode="numeric" maxlength={4} pattern="\d{4}" />
+      <Select name="buyerType" label="Buyer type" options={buyerTypes} />
+      <Select name="referral" label="How did you hear about Marea?" options={referralSources} />
+      <div class="absolute -left-full size-px overflow-hidden" aria-hidden="true">
+        <label for="f-company">Company</label>
+        <input id="f-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+    </div>
+    <div class="flex flex-col gap-10">
+      {PUBLIC_TURNSTILE_SITE_KEY && <div data-turnstile data-sitekey={PUBLIC_TURNSTILE_SITE_KEY} class="min-h-16"></div>}
+      <Button variant="submit" type="submit" data-submit>
+        <span data-submit-label>{brochureCopy.submit}</span>
+      </Button>
+      <p class="text-body-sm text-brand empty:hidden" data-form-status role="status" aria-live="polite"></p>
+      <Text size="fine" class="text-ink-soft">
+        {brochureCopy.consent} <a href="/privacy" class="underline underline-offset-2 hover:no-underline">Privacy Policy</a> for further clarity.
+      </Text>
+    </div>
+  </form>
+  <div data-brochure-success hidden tabindex="-1" class="flex flex-col gap-6 outline-none">
+    <Heading as="p" size="subheading">{brochureCopy.success.heading}</Heading>
+    <Text class="text-ink-soft">{brochureCopy.success.body}</Text>
+  </div>
+</div>
+
+<script>
+  import { brochureCopy } from "@/data/brochure";
+  import { trackLead } from "@/lib/analytics";
+
+  type TurnstileApi = { render: (el: HTMLElement, opts: Record<string, unknown>) => string; reset: (id?: string) => void };
+  declare global {
+    interface Window {
+      turnstile?: TurnstileApi;
+    }
+  }
+
+  const messages: Record<string, string> = {
+    firstName: "Please enter your first name.",
+    surname: "Please enter your surname.",
+    email: "Please enter a valid email address.",
+    phone: "Please enter a valid phone number.",
+    postcode: "Please enter a 4-digit postcode.",
+    buyerType: "Please choose a buyer type.",
+    referral: "Please tell us how you heard about Marea.",
+  };
+
+  function loadTurnstile(root: HTMLElement) {
+    const slot = root.querySelector<HTMLElement>("[data-turnstile]");
+    if (!slot || slot.dataset.rendered) return;
+    const render = () => {
+      if (!window.turnstile || slot.dataset.rendered) return;
+      slot.dataset.rendered = "true";
+      window.turnstile.render(slot, { sitekey: slot.dataset.sitekey, theme: "light", appearance: "interaction-only" });
+    };
+    if (window.turnstile) return render();
+    const s = document.createElement("script");
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    s.async = true;
+    s.onload = render;
+    document.head.append(s);
+  }
+
+  function setError(form: HTMLFormElement, name: string, message: string | null) {
+    const input = form.elements.namedItem(name) as HTMLInputElement | null;
+    const err = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+    input?.toggleAttribute("aria-invalid", !!message);
+    if (err) {
+      err.textContent = message ?? "";
+      err.classList.toggle("hidden", !message);
+    }
+  }
+
+  function clientValidate(form: HTMLFormElement) {
+    let first: HTMLElement | null = null;
+    for (const name of Object.keys(messages)) {
+      const el = form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
+      if (!el) continue;
+      const ok = el.checkValidity();
+      setError(form, name, ok ? null : messages[name]);
+      if (!ok && !first) first = el;
+    }
+    first?.focus();
+    return !first;
+  }
+
+  function setup() {
+    for (const root of document.querySelectorAll<HTMLElement>("[data-brochure]")) {
+      if (root.dataset.ready) continue;
+      root.dataset.ready = "true";
+      const form = root.querySelector<HTMLFormElement>("[data-brochure-form]")!;
+      const success = root.querySelector<HTMLElement>("[data-brochure-success]")!;
+      const status = root.querySelector<HTMLElement>("[data-form-status]")!;
+      const submit = root.querySelector<HTMLButtonElement>("[data-submit]")!;
+      const label = root.querySelector<HTMLElement>("[data-submit-label]")!;
+
+      new IntersectionObserver(
+        ([e], obs) => {
+          if (e.isIntersecting) {
+            loadTurnstile(root);
+            obs.disconnect();
+          }
+        },
+        { rootMargin: "600px" },
+      ).observe(root);
+
+      form.addEventListener("input", (e) => {
+        const t = e.target as HTMLInputElement;
+        if (t.hasAttribute("aria-invalid") && t.checkValidity()) setError(form, t.name, null);
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        status.textContent = "";
+        if (!clientValidate(form)) return;
+        submit.disabled = true;
+        label.textContent = "Sending…";
+        try {
+          const res = await fetch(form.action, {
+            method: "POST",
+            body: new FormData(form),
+            headers: { Accept: "application/json" },
+          });
+          const data = (await res.json().catch(() => ({}))) as { ok?: boolean; errors?: Record<string, string> };
+          if (res.ok && data.ok) {
+            const fd = new FormData(form);
+            trackLead({ buyer_type: String(fd.get("buyerType") ?? ""), referral: String(fd.get("referral") ?? "") });
+            form.hidden = true;
+            success.hidden = false;
+            success.focus();
+            return;
+          }
+          if (data.errors) {
+            for (const [name, msg] of Object.entries(data.errors)) setError(form, name, msg);
+          }
+          status.textContent = data.errors ? "Please check the highlighted fields." : brochureCopy.error;
+        } catch {
+          status.textContent = brochureCopy.error;
+        } finally {
+          submit.disabled = false;
+          label.textContent = brochureCopy.submit;
+          window.turnstile?.reset();
+        }
+      });
+    }
+  }
+  document.addEventListener("astro:page-load", setup);
+</script>

@@ -1,0 +1,24 @@
+---
+import type { Band } from "@/data/content";
+import Image from "@/components/primitives/Image.astro";
+
+interface Props {
+  band: Band;
+}
+const { band } = Astro.props;
+---
+{
+  band.zoom ? (
+    <section aria-label={band.image.alt} data-zoom class="relative aspect-band-mobile w-full overflow-hidden bg-sand md:aspect-band-tablet lg:aspect-auto lg:h-svh">
+      <div data-zoom-frame class="absolute inset-0 overflow-hidden">
+        <Image media={band.image} sizes="100vw" class="size-full" />
+      </div>
+    </section>
+  ) : (
+    <section aria-label={band.image.alt} data-parallax class="relative aspect-band-mobile w-full overflow-hidden md:aspect-band-tablet lg:aspect-band">
+      <div data-parallax-target class="absolute inset-0 scale-115">
+        <Image media={band.image} sizes="100vw" class="size-full" />
+      </div>
+    </section>
+  )
+}

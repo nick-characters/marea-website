@@ -1,0 +1,34 @@
+---
+import { home } from "@/data/content";
+import { getSvg } from "@/lib/media";
+import Section from "@/components/primitives/Section.astro";
+import Container from "@/components/primitives/Container.astro";
+import Text from "@/components/primitives/Text.astro";
+---
+<Section theme="burgundy" space="band" label="Amenities">
+  <Container>
+    <ul class="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-3 lg:grid-cols-6 lg:gap-15" data-stagger>
+      {
+        home.amenityIcons.map((item) => {
+          const svg = getSvg("icons", item.icon);
+          return (
+            <li class="flex flex-col items-center gap-6 text-center">
+              {svg ? (
+                <span class="block size-16 text-sand [&>svg]:size-full" aria-hidden="true" set:html={svg} />
+              ) : (
+                <span
+                  class="flex size-16 items-center justify-center rounded-full border border-sand/40 text-fine text-sand/60 uppercase"
+                  data-placeholder={`Icon: ${item.label}`}
+                  aria-hidden="true"
+                >
+                  Icon
+                </span>
+              )}
+              <Text size="label" class="text-sand">{item.label}</Text>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </Container>
+</Section>

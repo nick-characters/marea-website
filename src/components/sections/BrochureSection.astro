@@ -1,0 +1,50 @@
+---
+import { brochureCopy } from "@/data/brochure";
+import { site, telHref } from "@/data/site";
+import { team } from "@/data/content";
+import Section from "@/components/primitives/Section.astro";
+import Container from "@/components/primitives/Container.astro";
+import Heading from "@/components/primitives/Heading.astro";
+import Text from "@/components/primitives/Text.astro";
+import Image from "@/components/primitives/Image.astro";
+import BrochureForm from "@/components/ui/BrochureForm.astro";
+
+interface Props {
+  layout?: "centred" | "withAgents";
+}
+const { layout = "centred" } = Astro.props;
+---
+<Section theme="powder" id="brochure" label="Download brochure" class="py-split lg:py-20">
+  <Container>
+    <div class:list={["grid grid-cols-1 gap-20", layout === "withAgents" && "lg:grid-cols-3"]}>
+      {
+        layout === "withAgents" && (
+          <div class="order-2 flex flex-col gap-15 lg:order-none">
+            <div class="flex max-w-xs flex-col gap-10">
+              <Heading size="subheading" data-split>{team.agency.heading}</Heading>
+              <Text class="text-ink" data-reveal>{team.agency.body}</Text>
+            </div>
+            <ul class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-1" data-stagger>
+              {site.agents.map((agent) => (
+                <li class="flex max-w-agent flex-col gap-5">
+                  <Image media={agent.photo} sizes="240px" class="aspect-square w-full" />
+                  <div class="flex flex-col gap-3 text-ink">
+                    <Heading as="h3" size="strong">{agent.name}</Heading>
+                    <a href={telHref(agent.phone)} class="text-body hover:underline">{agent.phone}</a>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+      <div class:list={["mx-auto flex w-full max-w-narrow flex-col gap-15", layout === "withAgents" && "lg:col-span-2"]}>
+        <div class="flex flex-col gap-10">
+          <Heading data-split>{brochureCopy.heading}</Heading>
+          <Text size="body-sm" class="text-ink-soft" data-reveal>{brochureCopy.intro}</Text>
+        </div>
+        <BrochureForm />
+      </div>
+    </div>
+  </Container>
+</Section>

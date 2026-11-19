@@ -1,0 +1,110 @@
+---
+/**
+ * Full-screen menu (mobile nav, and the floating menu button once the hero nav scrolls away).
+ * Native <dialog> for focus trapping and Esc handling. transition:persist keeps it across navigations.
+ */
+import { site } from "@/data/site";
+import Icon from "@/components/primitives/Icon.astro";
+import Logo from "@/components/primitives/Logo.astro";
+import Text from "@/components/primitives/Text.astro";
+---
+<button
+  type="button"
+  data-menu-open
+  data-menu-float
+  aria-haspopup="dialog"
+  aria-controls="site-menu"
+  transition:persist="menu-float"
+  class="pointer-events-none fixed top-4 right-4 z-nav flex -translate-y-4 items-center gap-3 rounded-tl-leaf rounded-br-leaf bg-brand px-5 py-3 text-label text-sand uppercase opacity-0 transition duration-base ease-tide data-[show=true]:pointer-events-auto data-[show=true]:translate-y-0 data-[show=true]:opacity-100 lg:top-6 lg:right-6"
+>
+  Menu <Icon name="menu" />
+</button>
+<dialog
+  id="site-menu"
+  aria-label="Site menu"
+  transition:persist="site-menu"
+  class="m-0 h-dvh max-h-none w-full max-w-none bg-brand p-0 text-sand backdrop:bg-transparent open:flex"
+>
+  <div class="flex w-full flex-col justify-between px-gutter py-10">
+    <div class="flex items-center justify-between">
+      <a href="/" class="block w-logo-sm" data-menu-link><Logo name="marea-logo" /></a>
+      <button type="button" data-menu-close class="-mr-2 flex items-center gap-3 p-2 text-label uppercase">
+        Close <Icon name="close" />
+      </button>
+    </div>
+    <ul class="flex flex-col gap-4 py-12" data-menu-list>
+      {
+        site.nav.map((item) => (
+          <li>
+            <a href={item.href} data-menu-link class="font-display text-title uppercase transition-colors duration-fast hover:text-powder">
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      <a href="#brochure" data-menu-link class="w-fit rounded-tl-leaf rounded-br-leaf bg-powder px-6 py-3 text-button text-brand uppercase">Download Brochure</a>
+      <Text size="label" class="text-neutral-300">{site.address.short}</Text>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import { gsap } from "gsap";
+
+  function setup() {
+    const dialog = document.getElementById("site-menu") as HTMLDialogElement | null;
+    if (!dialog || dialog.dataset.ready) return;
+    dialog.dataset.ready = "true";
+    const reduce = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const open = () => {
+      dialog.showModal();
+      document.documentElement.style.overflow = "hidden";
+      if (!reduce()) {
+        gsap.fromTo(dialog, { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: 0.8, ease: "power3.inOut" });
+        gsap.fromTo(dialog.querySelectorAll("[data-menu-list] li"), { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, stagger: 0.06, delay: 0.3, duration: 0.8, ease: "expo.out" });
+      }
+    };
+    const close = () => {
+      document.documentElement.style.overflow = "";
+      if (reduce()) return dialog.close();
+      gsap.to(dialog, { clipPath: "inset(0 0 100% 0)", duration: 0.6, ease: "power3.inOut", onComplete: () => dialog.close() });
+    };
+
+    document.addEventListener("click", (e) => {
+      const t = e.target as HTMLElement;
+      if (t.closest("[data-menu-open]")) open();
+      else if (t.closest("[data-menu-close]")) close();
+      else if (t.closest("[data-menu-link]") && dialog.open) {
+        document.documentElement.style.overflow = "";
+        dialog.close();
+      }
+    });
+    dialog.addEventListener("cancel", (e) => {
+      e.preventDefault();
+      close();
+    });
+  }
+
+  // Floating menu button appears once the in-hero nav has scrolled away.
+  let observer: IntersectionObserver | undefined;
+  function watchNav() {
+    observer?.disconnect();
+    const float = document.querySelector<HTMLElement>("[data-menu-float]");
+    const nav = document.querySelector("[data-nav]");
+    if (!float) return;
+    if (!nav) return void (float.dataset.show = "true");
+    float.dataset.show = "false";
+    observer = new IntersectionObserver(([entry]) => {
+      float.dataset.show = String(!entry.isIntersecting);
+    });
+    observer.observe(nav);
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    setup();
+    watchNav();
+  });
+</script>

@@ -1,0 +1,21 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import HomeHero from "@/components/sections/HomeHero.astro";
+import ImageBand from "@/components/sections/ImageBand.astro";
+import SplitFeature from "@/components/sections/SplitFeature.astro";
+import StatementBand from "@/components/sections/StatementBand.astro";
+import AmenityIcons from "@/components/sections/AmenityIcons.astro";
+import { home } from "@/data/content";
+---
+<PageLayout>
+  <HomeHero slot="hero" />
+  <ImageBand band={home.bands.exterior} />
+  <SplitFeature split={home.intro} />
+  <ImageBand band={home.bands.aerial} />
+  <StatementBand />
+  <SplitFeature split={home.amenities} />
+  <AmenityIcons />
+  <ImageBand band={home.bands.kitchen} />
+  <SplitFeature split={home.community} />
+  <ImageBand band={home.bands.bay} />
+</PageLayout>
