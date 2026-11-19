@@ -108,5 +108,13 @@ Content source: `src/content/pages/*.ts` data files (copy pulled from Figma verb
 - [ ] Font licence confirmation (PP Hatton web use).
 - [ ] Decisions on DESIGN-SYSTEM.md gaps G1–G12.
 
+## Hosting status (20 Nov)
+- Cloudflare Worker `marea-website`, Git-connected via Workers Builds. `main` is production (`npx wrangler deploy`); every other branch runs `npx wrangler preview`.
+- Staging: branch `staging` → https://staging-marea-website.characters-agency.workers.dev
+- Secrets set for Production and Previews Base: `RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`. Build var `PUBLIC_TURNSTILE_SITE_KEY` set for both.
+- Turnstile widget "Marea brochure form" (managed) allows `mareabatemansbay.com.au` + `characters-agency.workers.dev`.
+- Note: Previews Base changes only apply to newly created Previews. After changing a base secret, delete and rebuild the Preview (or set it on the Preview directly).
+- Outstanding: GA4 ID (deferred), Resend domain verification, custom domain.
+
 ## Outstanding keys
-`RESEND_API_KEY`, `RESEND_FROM`, `LEAD_RECIPIENTS`, `BROCHURE_URL`, `PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`, `PUBLIC_GA_ID`
+`PUBLIC_GA_ID` (deferred). Done: `RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`, `PUBLIC_TURNSTILE_SITE_KEY`. Optional overrides: `RESEND_FROM`, `LEAD_RECIPIENTS`, `BROCHURE_URL`
