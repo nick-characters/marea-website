@@ -58,7 +58,7 @@ Families: **PP Hatton Medium (500)** for display and headings, always uppercase.
 
 | Token | Figma style | Desktop | Mobile (375) | Line height | Tracking | Case |
 |---|---|---|---|---|---|---|
-| display | (inner hero title, G3) | 120px | 56px | 1.1 (was 1.4, tightened for big multi-line titles on mobile; single line on desktop is unchanged) | 0 | upper |
+| display | (inner hero title, G3) | 120px | 44px @320 / 48px @375 | 1.1 (was 1.4, tightened for big multi-line titles on mobile; single line on desktop is unchanged) | 0 | upper |
 | title | Web/Title | 64px | 40px | 1.2 | 0 | upper |
 | headline | Web/Headline | 40px | 28px | 1.4 | 0 | upper |
 | subheading | Web/Subheading (Card Headline) | 24px | 20px | 1.4 | 0 | upper |
@@ -70,7 +70,7 @@ Families: **PP Hatton Medium (500)** for display and headings, always uppercase.
 | fine | consent / disclaimer | 10px | 10px | 1.4 | 0 | as typed |
 
 Fluid maths (viewport 375 to 1440, range 1065px): `size = min + (max − min) × (100vw − 375px) / 1065`.
-- display: 56→120 gives `clamp(3.5rem, 2.092rem + 6.009vw, 7.5rem)`
+- display: 44→120 over 320–1440 (so 9-letter titles fit at 320) gives `clamp(2.75rem, 1.393rem + 6.786vw, 7.5rem)`
 - title: 40→64 gives `clamp(2.5rem, 1.972rem + 2.254vw, 4rem)`
 - headline: 28→40 gives `clamp(1.75rem, 1.486rem + 1.127vw, 2.5rem)`
 - subheading: 20→24 gives `clamp(1.25rem, 1.162rem + 0.376vw, 1.5rem)`
