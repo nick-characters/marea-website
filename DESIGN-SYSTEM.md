@@ -121,7 +121,7 @@ Named rhythm tokens (applied by the `Section`/`Container` primitives, never by p
 - Container: full-bleed frames, with content inset by the gutter. Max content width 1280 (1440 − 2×80). Above 1440 the content stays centred at 1280 and background colours/images stay full-bleed.
 - Split block: 2 equal columns from `lg`. Text column `px-80 py-60`, body max width 400px. Image column is a square image (560/560), padded `py-80`, with 40px on the outer edge. Image side alternates. Below `lg` it stacks with the image first, and the text keeps its order.
 - Narrow column: 480px (brochure form, statement copy).
-- Full-bleed image bands: 1440×1024 on desktop (aspect ~1.41). Fluid on smaller screens (aspect 4/5 on mobile, 4/3 on tablet).
+- Full-bleed image bands: 1440×1024 ratio at every width, capped at 80svh (`--band-max-height`) so wide screens keep a sensible crop and phones see the whole landscape image (client direction 20 Nov).
 - Amenity icon row: 6 columns on desktop, 3 on tablet, 2 on mobile.
 - POI list: 3 columns from `lg`, 1 column below.
 - Footer: 4 columns from `lg`, 2 on tablet, 1 on mobile.

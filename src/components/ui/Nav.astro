@@ -39,7 +39,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
   <button
     type="button"
     data-menu-open
-    aria-haspopup="dialog"
+    aria-expanded="false"
     aria-controls="site-menu"
     class:list={["-mr-2 flex items-center gap-3 p-2 text-label uppercase lg:hidden", layout === "home" && "ml-auto"]}
   >

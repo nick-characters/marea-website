@@ -20,7 +20,7 @@ import Nav from "@/components/ui/Nav.astro";
           </h1>
           <div data-hero-fade><Button href="#brochure">Download Brochure</Button></div>
         </div>
-        <div data-hero-arch class="w-3/5 max-w-xs shrink-0 sm:w-2/5 lg:w-90 lg:max-w-none">
+        <div data-hero-arch class="order-first w-3/5 max-w-xs shrink-0 sm:w-2/5 lg:order-none lg:w-90 lg:max-w-none">
           <!-- The supplied artwork includes its own arch frame and transparent surround. -->
           <Image media={home.heroImage} priority tone="dark" sizes="(min-width: 1024px) 360px, 60vw" class="aspect-arch w-full" />
         </div>

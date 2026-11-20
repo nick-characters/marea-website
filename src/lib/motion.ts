@@ -88,11 +88,7 @@ function bindAnchors() {
       e.preventDefault();
       e.stopPropagation();
       // Links inside the menu overlay: close it first so the page can scroll.
-      const dialog = a.closest("dialog");
-      if (dialog?.open) {
-        document.documentElement.style.overflow = "";
-        dialog.close();
-      }
+      if (a.closest("[data-menu]")) document.dispatchEvent(new Event("marea:menu-close"));
       requestAnimationFrame(() => scrollToTarget(target));
       history.replaceState(history.state, "", href);
     },

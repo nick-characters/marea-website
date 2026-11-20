@@ -1,7 +1,10 @@
 ---
 /**
- * Full-screen menu (mobile nav, and the floating menu button once the hero nav scrolls away).
- * Native <dialog> for focus trapping and Esc handling. transition:persist keeps it across navigations.
+ * Full-screen menu (mobile nav, plus the floating "Menu" button once the hero nav scrolls away).
+ * A fixed overlay that slides with a CSS transform. No <dialog> or clip-path, because iOS Safari renders
+ * those inconsistently in the top layer. Accessibility: role=dialog + aria-modal, the page behind is
+ * made inert while open, Esc closes, and focus moves in and back out.
+ * transition:persist keeps it across ClientRouter navigations.
  */
 import { site } from "@/data/site";
 import Icon from "@/components/primitives/Icon.astro";
@@ -12,31 +15,34 @@ import Text from "@/components/primitives/Text.astro";
   type="button"
   data-menu-open
   data-menu-float
-  aria-haspopup="dialog"
   aria-controls="site-menu"
+  aria-expanded="false"
   transition:persist="menu-float"
-  class="pointer-events-none fixed top-4 right-4 z-nav flex -translate-y-4 items-center gap-3 rounded-tl-leaf rounded-br-leaf bg-burgundy-400 px-5 py-3 text-label text-sand uppercase opacity-0 transition hover:bg-burgundy-300 active:bg-burgundy-500 duration-base ease-tide data-[show=true]:pointer-events-auto data-[show=true]:translate-y-0 data-[show=true]:opacity-100 lg:top-6 lg:right-6"
+  class="pointer-events-none fixed top-4 right-4 z-nav flex -translate-y-4 items-center gap-3 rounded-tl-leaf rounded-br-leaf bg-burgundy-400 px-5 py-3 text-label text-sand uppercase opacity-0 transition duration-base ease-tide hover:bg-burgundy-300 active:bg-burgundy-500 data-[show=true]:pointer-events-auto data-[show=true]:translate-y-0 data-[show=true]:opacity-100 lg:top-6 lg:right-6"
 >
   Menu <Icon name="menu" />
 </button>
-<dialog
+<div
   id="site-menu"
+  data-menu
+  data-open="false"
+  role="dialog"
+  aria-modal="true"
   aria-label="Site menu"
-  tabindex="-1"
   transition:persist="site-menu"
-  class="m-0 h-dvh max-h-none w-full max-w-none bg-brand p-0 text-sand outline-none backdrop:bg-transparent open:flex"
+  class="menu-panel text-sand"
 >
-  <div class="flex w-full flex-col justify-between px-gutter py-10">
+  <div class="flex min-h-full w-full flex-col justify-between gap-12 px-gutter pt-safe pb-10">
     <div class="flex items-center justify-between">
       <a href="/" class="block w-logo-sm" data-menu-link aria-label="Marea home"><Logo name="marea-wordmark" tone="light" width={129} /></a>
       <button type="button" data-menu-close class="-mr-2 flex items-center gap-3 p-2 text-label uppercase">
         Close <Icon name="close" />
       </button>
     </div>
-    <ul class="flex flex-col gap-4 py-12" data-menu-list>
+    <ul class="flex flex-col gap-4" data-menu-list>
       {
-        site.nav.map((item) => (
-          <li>
+        site.nav.map((item, i) => (
+          <li class="menu-item" style={`--i: ${i}`}>
             <a href={item.href} data-menu-link class="font-display text-title uppercase transition-colors duration-fast hover:text-powder">
               {item.label}
             </a>
@@ -44,51 +50,60 @@ import Text from "@/components/primitives/Text.astro";
         ))
       }
     </ul>
-    <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+    <div class="menu-item flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between" style="--i: 5">
       <a href="#brochure" data-menu-link class="w-fit rounded-tl-leaf rounded-br-leaf bg-powder-300 px-6 py-3 text-button text-brand uppercase transition-colors duration-fast hover:bg-powder-200 active:bg-powder-400">Download Brochure</a>
       <Text size="label" class="text-neutral-300">{site.address.short}</Text>
     </div>
   </div>
-</dialog>
+</div>
 
 <script>
-  import { gsap } from "gsap";
+  const panel = () => document.getElementById("site-menu");
+  let opener: HTMLElement | null = null;
 
-  function setup() {
-    const dialog = document.getElementById("site-menu") as HTMLDialogElement | null;
-    if (!dialog || dialog.dataset.ready) return;
-    dialog.dataset.ready = "true";
-    const reduce = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function setInert(on: boolean) {
+    for (const el of document.body.children) {
+      if (el instanceof HTMLElement && !el.matches("[data-menu]")) el.inert = on;
+    }
+  }
 
-    const open = () => {
-      dialog.showModal();
-      // Focus the dialog itself so no link shows a focus ring on open; Tab still moves into the menu.
-      dialog.focus();
-      document.documentElement.style.overflow = "hidden";
-      if (!reduce()) {
-        gsap.fromTo(dialog, { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: 1, ease: "power3.inOut" });
-        gsap.fromTo(dialog.querySelectorAll("[data-menu-list] li"), { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, stagger: 0.08, delay: 0.3, duration: 0.8, ease: "expo.out" });
-      }
-    };
-    const close = () => {
-      document.documentElement.style.overflow = "";
-      if (reduce()) return dialog.close();
-      gsap.to(dialog, { clipPath: "inset(0 0 100% 0)", duration: 0.8, ease: "power3.inOut", onComplete: () => dialog.close() });
-    };
+  function open(trigger: HTMLElement) {
+    const menu = panel();
+    if (!menu || menu.dataset.open === "true") return;
+    opener = trigger;
+    menu.dataset.open = "true";
+    document.documentElement.classList.add("menu-open");
+    for (const b of document.querySelectorAll("[data-menu-open]")) b.setAttribute("aria-expanded", "true");
+    setInert(true);
+    menu.querySelector<HTMLElement>("[data-menu-close]")?.focus({ preventScroll: true });
+  }
 
+  function close(restoreFocus = true) {
+    const menu = panel();
+    if (!menu || menu.dataset.open !== "true") return;
+    menu.dataset.open = "false";
+    document.documentElement.classList.remove("menu-open");
+    for (const b of document.querySelectorAll("[data-menu-open]")) b.setAttribute("aria-expanded", "false");
+    setInert(false);
+    if (restoreFocus) opener?.focus({ preventScroll: true });
+  }
+
+  // Global listeners are bound once; the panel persists across navigations.
+  if (!(window as unknown as { __mareaMenu?: boolean }).__mareaMenu) {
+    (window as unknown as { __mareaMenu: boolean }).__mareaMenu = true;
     document.addEventListener("click", (e) => {
       const t = e.target as HTMLElement;
-      if (t.closest("[data-menu-open]")) open();
-      else if (t.closest("[data-menu-close]")) close();
-      else if (t.closest("[data-menu-link]") && dialog.open) {
-        document.documentElement.style.overflow = "";
-        dialog.close();
-      }
+      const trigger = t.closest<HTMLElement>("[data-menu-open]");
+      if (trigger) return open(trigger);
+      if (t.closest("[data-menu-close]")) return close();
+      if (t.closest("[data-menu-link]")) close(false);
     });
-    dialog.addEventListener("cancel", (e) => {
-      e.preventDefault();
-      close();
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") close();
     });
+    document.addEventListener("marea:menu-close", () => close(false));
+    // New page content arrives un-inerted; make sure state is clean after each navigation.
+    document.addEventListener("astro:after-swap", () => close(false));
   }
 
   // Floating menu button appears once the in-hero nav has scrolled away.
@@ -106,8 +121,5 @@ import Text from "@/components/primitives/Text.astro";
     observer.observe(nav);
   }
 
-  document.addEventListener("astro:page-load", () => {
-    setup();
-    watchNav();
-  });
+  document.addEventListener("astro:page-load", watchNav);
 </script>
