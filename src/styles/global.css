@@ -126,7 +126,7 @@
   --text-submit: 0.9375rem;
   --text-submit--line-height: 1;
   --text-fine: 0.625rem;
-  --text-fine--line-height: 1.4;
+  --text-fine--line-height: 1.5;
 
   /* Spacing: named rhythm tokens (fluid 375 → 1440); numeric 4px scale stays available */
   --spacing-gutter: clamp(1.25rem, -0.07rem + 5.634vw, 5rem);
@@ -140,7 +140,7 @@
   --container-frame: 90rem; /* 1440: design frame, caps full-bleed splits on very wide screens */
   --container-content: 80rem; /* 1280 = 1440 − 2 × 80 gutter */
   --container-narrow: 30rem; /* 480: form, statement */
-  --container-prose: 25rem; /* 400: split body copy */
+  --container-measure: 25rem; /* 400: max width for all running text (Tailwind's built-in max-w-prose is 65ch, so a distinct name) */
   --container-agent: 15rem; /* 240: agent cards */
   --container-wordmark: 36rem; /* 576: home hero wordmark */
   --container-logo-sm: 8.0555rem; /* 128.9: nav logo */
@@ -162,10 +162,12 @@
   /* Motion */
   --ease-tide: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-fast: 200ms;
+  --duration-fast: 300ms;
   --duration-base: 600ms;
   --duration-slow: 1200ms;
   --duration-tide: 1800ms;
+  --duration-page: 1200ms; /* page transition: signed off 20 Nov, keep */
+  --duration-scroll: 2000ms; /* in-page anchor scrolling */
 
   /* Layers */
   --z-nav: 40;
@@ -183,7 +185,7 @@
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    scroll-behavior: smooth;
+    /* anchor scrolling handled in src/lib/motion.ts (slower, eased) */
   }
   html.lenis,
   html.lenis body {
@@ -211,9 +213,6 @@
   video {
     display: block;
     max-width: 100%;
-  }
-  [id] {
-    scroll-margin-top: var(--spacing-gutter);
   }
 }
 
@@ -265,10 +264,10 @@
 /* Page transition: a burgundy tide rising over the old page (View Transitions API) */
 @media (prefers-reduced-motion: no-preference) {
   ::view-transition-old(root) {
-    animation: var(--duration-slow) var(--ease-tide) both mr-fade-out;
+    animation: var(--duration-page) var(--ease-tide) both mr-fade-out;
   }
   ::view-transition-new(root) {
-    animation: var(--duration-slow) var(--ease-tide) both mr-tide-in;
+    animation: var(--duration-page) var(--ease-tide) both mr-tide-in;
   }
 }
 @keyframes mr-fade-out {

@@ -22,8 +22,9 @@ import Text from "@/components/primitives/Text.astro";
 <dialog
   id="site-menu"
   aria-label="Site menu"
+  tabindex="-1"
   transition:persist="site-menu"
-  class="m-0 h-dvh max-h-none w-full max-w-none bg-brand p-0 text-sand backdrop:bg-transparent open:flex"
+  class="m-0 h-dvh max-h-none w-full max-w-none bg-brand p-0 text-sand outline-none backdrop:bg-transparent open:flex"
 >
   <div class="flex w-full flex-col justify-between px-gutter py-10">
     <div class="flex items-center justify-between">
@@ -61,16 +62,18 @@ import Text from "@/components/primitives/Text.astro";
 
     const open = () => {
       dialog.showModal();
+      // Focus the dialog itself so no link shows a focus ring on open; Tab still moves into the menu.
+      dialog.focus();
       document.documentElement.style.overflow = "hidden";
       if (!reduce()) {
-        gsap.fromTo(dialog, { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: 0.8, ease: "power3.inOut" });
-        gsap.fromTo(dialog.querySelectorAll("[data-menu-list] li"), { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, stagger: 0.06, delay: 0.3, duration: 0.8, ease: "expo.out" });
+        gsap.fromTo(dialog, { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: 1, ease: "power3.inOut" });
+        gsap.fromTo(dialog.querySelectorAll("[data-menu-list] li"), { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, stagger: 0.08, delay: 0.3, duration: 0.8, ease: "expo.out" });
       }
     };
     const close = () => {
       document.documentElement.style.overflow = "";
       if (reduce()) return dialog.close();
-      gsap.to(dialog, { clipPath: "inset(0 0 100% 0)", duration: 0.6, ease: "power3.inOut", onComplete: () => dialog.close() });
+      gsap.to(dialog, { clipPath: "inset(0 0 100% 0)", duration: 0.8, ease: "power3.inOut", onComplete: () => dialog.close() });
     };
 
     document.addEventListener("click", (e) => {

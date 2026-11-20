@@ -31,6 +31,8 @@
 | 19 Nov | `astro check` requires TypeScript 6, so TS is pinned to ^6. |
 | 20 Nov | Full brand palette added (Marea_Palette.json). Button states: hover = 1 step lighter, press = 1 step darker (primary powder 300→200/400; submit + floating menu burgundy 400→300/500). |
 | 20 Nov | Real assets imported into the repo (`src/assets`). Amenity "rooftop" band reuses the building-exterior image; Team project square reuses the amenity closing image (client direction). Nav uses the Marea wordmark; home hero uses the primary (MAREA / BATEMANS BAY) logo. The hero arch artwork includes its own frame, so the coded border was removed. |
+| 20 Nov | Fix: animations were effectively instant (duration tokens emitted in seconds were read as ms). All reveals now ease properly on desktop and mobile. |
+| 20 Nov | Running text capped at 400px (`max-w-measure`; Tailwind's `max-w-prose` is 65ch) with 150% leading, incl. fine print. Footer phone replaced by a Privacy Policy link. In-page anchor scrolling is a 2s eased scroll on all devices. Page transition pinned to its own token (`--duration-page`). Logos object-contain with a small transparent margin. |
 | 20 Nov | Launch inputs (domain, Resend domain verification, GA4) deferred until design/build sign-off. Work continues on the `staging` preview. |
 
 ## Schedule (to hit Monday)

@@ -14,18 +14,25 @@
  */
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
 
-gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase);
+gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase, ScrollToPlugin);
 
 let lenis: Lenis | null = null;
 let mm: gsap.MatchMedia | null = null;
 let easesReady = false;
 
 const root = () => getComputedStyle(document.documentElement);
-const seconds = (name: string) => Number.parseFloat(root().getPropertyValue(name)) / 1000 || 0.6;
+/** Read a duration token in seconds. Tokens may be emitted as "600ms" or ".6s" (Tailwind minifies to s). */
+const seconds = (name: string) => {
+  const raw = root().getPropertyValue(name).trim();
+  const n = Number.parseFloat(raw);
+  if (!Number.isFinite(n)) return 0.6;
+  return raw.endsWith("ms") ? n / 1000 : n;
+};
 
 function registerEases() {
   if (easesReady) return;
@@ -45,19 +52,52 @@ function startLenis() {
   const fine = window.matchMedia("(pointer: fine)").matches;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!fine || reduce) return;
-  lenis = new Lenis({ autoRaf: false, anchors: { offset: 0 }, lerp: 0.09 });
+  lenis = new Lenis({ autoRaf: false, lerp: 0.08 });
   lenis.on("scroll", ScrollTrigger.update);
   gsap.ticker.add(raf);
   gsap.ticker.lagSmoothing(0);
 }
 const raf = (time: number) => lenis?.raf(time * 1000);
 
+/** Unhurried in-page scrolling (e.g. "Download Brochure" → #brochure) on every device. */
 export function scrollToTarget(target: string | HTMLElement) {
-  if (lenis) lenis.scrollTo(target, { duration: 1.4 });
-  else
-    (typeof target === "string" ? document.querySelector(target) : target)?.scrollIntoView({
-      behavior: "smooth",
-    });
+  const el = typeof target === "string" ? document.querySelector<HTMLElement>(target) : target;
+  if (!el) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return el.scrollIntoView();
+  const duration = seconds("--duration-scroll");
+  if (lenis) {
+    lenis.scrollTo(el, { duration, easing: (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2) });
+  } else {
+    gsap.to(window, { scrollTo: { y: el, autoKill: true }, duration, ease: "tide" });
+  }
+}
+
+let anchorsBound = false;
+function bindAnchors() {
+  if (anchorsBound) return;
+  anchorsBound = true;
+  window.addEventListener(
+    "click",
+    (e) => {
+      const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
+      const href = a?.getAttribute("href");
+      if (!a || !href || href === "#") return;
+      const target = document.querySelector<HTMLElement>(href);
+      if (!target) return;
+      // Capture phase + stopPropagation: Astro's ClientRouter would otherwise jump instantly to the hash.
+      e.preventDefault();
+      e.stopPropagation();
+      // Links inside the menu overlay: close it first so the page can scroll.
+      const dialog = a.closest("dialog");
+      if (dialog?.open) {
+        document.documentElement.style.overflow = "";
+        dialog.close();
+      }
+      requestAnimationFrame(() => scrollToTarget(target));
+      history.replaceState(history.state, "", href);
+    },
+    { capture: true },
+  );
 }
 
 function q<T extends Element = HTMLElement>(sel: string, scope: ParentNode = document) {
@@ -80,8 +120,8 @@ function animate(isDesktop: boolean) {
     )
       .fromTo(
         q("[data-hero-arch]", homeHero),
-        { yPercent: 12, opacity: 0, clipPath: "inset(30% 0 0 0 round 50rem 50rem 0 0)" },
-        { yPercent: 0, opacity: 1, clipPath: "inset(0% 0 0 0 round 50rem 50rem 0 0)", duration: tide },
+        { yPercent: 8, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: tide, clearProps: "transform" },
         0.2,
       )
       .fromTo(
@@ -252,6 +292,7 @@ function showEverything() {
 
 export function initMotion() {
   registerEases();
+  bindAnchors();
   startLenis();
   mm = gsap.matchMedia();
   mm.add(

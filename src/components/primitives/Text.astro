@@ -7,11 +7,12 @@ interface Props {
   [key: `data-${string}`]: unknown;
 }
 const { as: Tag = "p", size = "body", weight, class: cls, ...rest } = Astro.props;
+/* Running text (body, body-sm, fine): 400px measure, 150% leading. */
 const sizes = {
-  body: "text-body",
-  "body-sm": "text-body-sm",
+  body: "text-body max-w-measure",
+  "body-sm": "text-body-sm max-w-measure",
   label: "text-label uppercase",
-  fine: "text-fine",
+  fine: "text-fine max-w-measure",
   button: "text-button uppercase",
 };
 const weights = { light: "font-light", regular: "font-normal", medium: "font-medium" };

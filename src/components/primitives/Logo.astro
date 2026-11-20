@@ -44,7 +44,7 @@ const widths = [width, width * 2].filter((w) => !src || w <= src.width);
         widths={widths.length ? widths : [src.width]}
         sizes={`${width}px`}
         loading={priority ? "eager" : "lazy"}
-        class="block h-auto w-full"
+        class="block h-auto w-full object-contain"
       />
     </span>
   ) : (
