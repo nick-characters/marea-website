@@ -10,12 +10,14 @@ interface Props {
 const { variant = "primary", href, type = "button", class: cls, ...rest } = Astro.props;
 const base =
   "group/btn relative inline-flex items-center justify-center overflow-hidden whitespace-nowrap transition-colors duration-fast ease-tide focus-visible:outline-2";
+/* State rule (brand, 20 Nov): hover = 1 palette step lighter, press = 1 step darker. */
 const variants = {
-  primary: "rounded-tl-leaf rounded-br-leaf bg-powder text-brand px-6 py-3 font-body text-button uppercase hover:bg-brand hover:text-sand",
+  primary:
+    "rounded-tl-leaf rounded-br-leaf bg-powder-300 text-brand px-6 py-3 font-body text-button uppercase hover:bg-powder-200 active:bg-powder-400",
   outline:
-    "rounded-tl-leaf rounded-br-leaf border border-powder px-6 py-3 font-body text-button uppercase hover:bg-powder hover:text-brand",
+    "rounded-tl-leaf rounded-br-leaf border border-powder-300 px-6 py-3 font-body text-button uppercase hover:border-powder-200 active:border-powder-400",
   submit:
-    "rounded-tl-leaf-lg rounded-br-leaf-lg bg-brand text-sand w-full h-13 px-12 font-display text-submit uppercase hover:bg-moss disabled:opacity-60 disabled:cursor-progress",
+    "rounded-tl-leaf-lg rounded-br-leaf-lg bg-burgundy-400 text-sand w-full h-13 px-12 font-display text-submit uppercase hover:bg-burgundy-300 active:bg-burgundy-500 disabled:opacity-60 disabled:cursor-progress",
 };
 const classes = [base, variants[variant], cls];
 ---

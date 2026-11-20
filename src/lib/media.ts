@@ -37,4 +37,6 @@ export interface Media {
   alt: string;
   /** What should go here; shown on the placeholder until the real image arrives */
   label: string;
+  /** Focal point when cropped by object-cover (default centre) */
+  position?: "top" | "center" | "bottom";
 }

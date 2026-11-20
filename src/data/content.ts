@@ -118,7 +118,7 @@ export const residences = {
     title: "Residence",
     tone: "light" as const,
     image: {
-      key: "residences/hero",
+      key: "home/living",
       alt: "Open-plan living with views to the bay",
       label: "Hero: living room",
     },
@@ -241,7 +241,13 @@ export const amenity = {
       image: { key: "amenity/pool", alt: "Swimming pool looking across the bay", label: "Full-bleed: pool" },
       zoom: true,
     },
-    { image: { key: "amenity/rooftop", alt: "Rooftop terrace", label: "Full-bleed: rooftop" } },
+    {
+      image: {
+        key: "home/exterior",
+        alt: "Marea residences from the waterfront",
+        label: "Full-bleed: building exterior",
+      },
+    },
     { image: { key: "amenity/closing", alt: "Marea amenity", label: "Full-bleed: closing image" } },
   ] satisfies Band[],
 };
@@ -301,7 +307,7 @@ export const location = {
   bands: [
     {
       image: {
-        key: "location/aerial-pin",
+        key: "home/aerial-pin",
         alt: "Aerial view of Batemans Bay with Marea marked",
         label: "Full-bleed: aerial with M pin",
       },
@@ -331,7 +337,7 @@ export const team = {
       "Each development is shaped with a focus on quality, durability and long-term performance. Architectural integrity, environmental consideration and commercial discipline are balanced to deliver projects designed to endure and contribute lasting value over time.",
     ],
     image: {
-      key: "team/building",
+      key: "amenity/closing",
       alt: "Place Co residential building with timber screens and palms",
       label: "Square: Place Co project",
     },

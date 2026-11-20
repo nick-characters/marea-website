@@ -15,7 +15,7 @@ import Text from "@/components/primitives/Text.astro";
   aria-haspopup="dialog"
   aria-controls="site-menu"
   transition:persist="menu-float"
-  class="pointer-events-none fixed top-4 right-4 z-nav flex -translate-y-4 items-center gap-3 rounded-tl-leaf rounded-br-leaf bg-brand px-5 py-3 text-label text-sand uppercase opacity-0 transition duration-base ease-tide data-[show=true]:pointer-events-auto data-[show=true]:translate-y-0 data-[show=true]:opacity-100 lg:top-6 lg:right-6"
+  class="pointer-events-none fixed top-4 right-4 z-nav flex -translate-y-4 items-center gap-3 rounded-tl-leaf rounded-br-leaf bg-burgundy-400 px-5 py-3 text-label text-sand uppercase opacity-0 transition hover:bg-burgundy-300 active:bg-burgundy-500 duration-base ease-tide data-[show=true]:pointer-events-auto data-[show=true]:translate-y-0 data-[show=true]:opacity-100 lg:top-6 lg:right-6"
 >
   Menu <Icon name="menu" />
 </button>
@@ -27,7 +27,7 @@ import Text from "@/components/primitives/Text.astro";
 >
   <div class="flex w-full flex-col justify-between px-gutter py-10">
     <div class="flex items-center justify-between">
-      <a href="/" class="block w-logo-sm" data-menu-link><Logo name="marea-logo" /></a>
+      <a href="/" class="block w-logo-sm" data-menu-link aria-label="Marea home"><Logo name="marea-wordmark" tone="light" width={129} /></a>
       <button type="button" data-menu-close class="-mr-2 flex items-center gap-3 p-2 text-label uppercase">
         Close <Icon name="close" />
       </button>
@@ -44,7 +44,7 @@ import Text from "@/components/primitives/Text.astro";
       }
     </ul>
     <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-      <a href="#brochure" data-menu-link class="w-fit rounded-tl-leaf rounded-br-leaf bg-powder px-6 py-3 text-button text-brand uppercase">Download Brochure</a>
+      <a href="#brochure" data-menu-link class="w-fit rounded-tl-leaf rounded-br-leaf bg-powder-300 px-6 py-3 text-button text-brand uppercase transition-colors duration-fast hover:bg-powder-200 active:bg-powder-400">Download Brochure</a>
       <Text size="label" class="text-neutral-300">{site.address.short}</Text>
     </div>
   </div>

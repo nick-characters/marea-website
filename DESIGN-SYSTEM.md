@@ -19,7 +19,28 @@ Source of truth: Figma file `Marea_Design` (key `38zbJ7RfB8G1I8b8fw6T7q`), page 
 | G11 | **Font licence.** The WOFF2 files contain no licence string. | Please confirm the Pangram Pangram licence covers web use for this domain. |
 | G12 | **Home's second section** (aerial photo with an "M" pin overlay) and the Location aerial both show a map pin over the photo. | Build it as an `ImageBand` with an optional pin overlay (pin SVG from the supplied assets). |
 
-## Colour (Figma variables)
+## Colour
+
+Full palette from `Marea_Palette.json` (20 Nov). Burgundy is the brand primary; powder blue, moss and eucalyptus are secondary; neutrals for surfaces and text.
+
+| Scale | 100 | 200 | 300 | 400 | 500 | 600 | 700 |
+|---|---|---|---|---|---|---|---|
+| burgundy | `#ecd0cd` | `#c08d84` | `#8a4e3f` | **`#481f15`** | `#39140f` | `#290b0b` | `#180507` |
+| eucalyptus | `#e2e2cb` | `#b9b998` | **`#919169`** | `#6a6a4a` | `#46462f` | | |
+| moss | `#a29d8a` | `#7a7459` | **`#544c2b`** | `#3b341a` | `#231e0b` | | |
+| powder | `#f2fbff` | `#cfe2ec` | **`#b1c9d5`** | `#8c9fa9` | `#69777f` | | |
+
+Neutrals: 50 `#f7f3ea`, **100 `#e5ddca`**, 200 `#cfc9b8`, 300 `#b6afa1`, 400 `#9b9489`, 500 `#7f7970`, 600 `#645e58`, 700 `#494440`, 800 `#2f2b28`, 900 `#181513`. (Bold = supplied base.)
+
+### Interactive states
+Hover = one palette step lighter; press (`:active`) = one step darker.
+| Button | Rest | Hover | Press | Text contrast (worst case) |
+|---|---|---|---|---|
+| Primary | powder-300 | powder-200 | powder-400 | burgundy on powder-400 = 5.16:1 |
+| Outline (border) | powder-300 | powder-200 | powder-400 | n/a |
+| Submit / floating menu | burgundy-400 | burgundy-300 | burgundy-500 | sand on burgundy-300 = 4.79:1 |
+
+### Base tokens used in the design (Figma variables)
 
 | Token | Hex | Figma variable | Use |
 |---|---|---|---|

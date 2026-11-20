@@ -32,7 +32,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
   {
     layout === "default" && (
       <a href="/" class="block w-28 lg:w-logo-sm" aria-label="Marea home">
-        <Logo name="marea-logo" />
+        <Logo name="marea-wordmark" tone={tone === "light" ? "light" : "dark"} width={129} priority />
       </a>
     )
   }

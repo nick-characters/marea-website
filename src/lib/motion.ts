@@ -84,7 +84,6 @@ function animate(isDesktop: boolean) {
         { yPercent: 0, opacity: 1, clipPath: "inset(0% 0 0 0 round 50rem 50rem 0 0)", duration: tide },
         0.2,
       )
-      .fromTo(q("[data-hero-arch] img", homeHero), { scale: 1.3 }, { scale: 1, duration: tide * 1.3 }, 0.2)
       .fromTo(
         q("[data-hero-fade]", homeHero),
         { opacity: 0, y: 16 },

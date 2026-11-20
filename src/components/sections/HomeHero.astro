@@ -15,19 +15,14 @@ import Nav from "@/components/ui/Nav.astro";
       <div data-hero-fade><Nav layout="home" tone="light" /></div>
       <div class="flex flex-1 flex-col items-center gap-12 lg:flex-row lg:justify-between lg:px-16">
         <div class="flex w-full max-w-wordmark flex-col items-center gap-10 lg:gap-16">
-          <h1 class="w-full text-sand" data-hero-wordmark>
-            <Logo name="marea-wordmark" />
+          <h1 class="w-full" data-hero-wordmark>
+            <Logo name="marea-primary" tone="light" width={576} priority />
           </h1>
           <div data-hero-fade><Button href="#brochure">Download Brochure</Button></div>
         </div>
-        <div data-hero-arch class="w-3/5 max-w-xs shrink-0 rounded-arch border border-sand/30 p-2 sm:w-2/5 lg:w-90 lg:max-w-none">
-          <Image
-            media={home.heroImage}
-            priority
-            tone="dark"
-            sizes="(min-width: 1024px) 25vw, 60vw"
-            class="aspect-arch w-full rounded-arch"
-          />
+        <div data-hero-arch class="w-3/5 max-w-xs shrink-0 sm:w-2/5 lg:w-90 lg:max-w-none">
+          <!-- The supplied artwork includes its own arch frame and transparent surround. -->
+          <Image media={home.heroImage} priority tone="dark" sizes="(min-width: 1024px) 360px, 60vw" class="aspect-arch w-full" />
         </div>
       </div>
       <ul class="flex flex-col items-center gap-3 text-center text-sand lg:flex-row lg:justify-between" data-hero-fade>

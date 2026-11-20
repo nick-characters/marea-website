@@ -4,7 +4,8 @@
     "includes": [
       "src/**",
       "scripts/**",
-      "!**/*.astro"
+      "!**/*.astro",
+      "!src/assets/**"
     ]
   },
   "formatter": {

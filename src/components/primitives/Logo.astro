@@ -1,45 +1,55 @@
 ---
 /**
- * Brand logos. Drop SVGs into src/assets/logos/<name>.svg (use currentColor fills to inherit
- * the section colour). Until then a typeset fallback stands in.
+ * Brand logos (supplied rasters in src/assets/logos, trimmed of padding).
+ * tone: "dark" = burgundy/charcoal artwork for light backgrounds; "light" = cream artwork for dark backgrounds.
+ * Width is set by the caller (class); height follows the artwork's aspect ratio.
  */
-import { getSvg } from "@/lib/media";
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+type Name = "marea-wordmark" | "marea-primary" | "placeco" | "property-collective";
 interface Props {
-  name: "marea-wordmark" | "marea-logo" | "placeco" | "property-collective";
+  name: Name;
+  tone?: "dark" | "light";
+  /** Rendered width in CSS px at the largest size (for srcset generation) */
+  width?: number;
+  priority?: boolean;
   class?: string;
   label?: string;
 }
-const { name, class: cls, label } = Astro.props;
-const svg = getSvg("logos", name);
-const names = {
-  "marea-wordmark": "Marea Batemans Bay",
-  "marea-logo": "Marea",
+const { name, tone = "dark", width = 240, priority = false, class: cls, label } = Astro.props;
+
+const files = import.meta.glob<{ default: ImageMetadata }>("/src/assets/logos/*.png", { eager: true });
+const variant: Record<Name, Record<"dark" | "light", string>> = {
+  "marea-wordmark": { dark: "marea-wordmark-burgundy", light: "marea-wordmark-light" },
+  "marea-primary": { dark: "marea-primary-burgundy", light: "marea-primary-cream" },
+  placeco: { dark: "placeco-dark", light: "placeco-light" },
+  "property-collective": { dark: "property-collective-light", light: "property-collective-light" },
+};
+const names: Record<Name, string> = {
+  "marea-wordmark": "Marea",
+  "marea-primary": "Marea Batemans Bay",
   placeco: "Place Co",
   "property-collective": "The Property Collective",
 };
-const a11y = label ?? names[name];
+const src = files[`/src/assets/logos/${variant[name][tone]}.png`]?.default;
+const widths = [width, width * 2].filter((w) => !src || w <= src.width);
 ---
 {
-  svg ? (
-    <span role="img" aria-label={a11y} class:list={["block [&>svg]:h-auto [&>svg]:w-full", cls]} set:html={svg} />
-  ) : name === "marea-wordmark" ? (
-    <span role="img" aria-label={a11y} data-logo-fallback class:list={["flex flex-col items-center", cls]}>
-      <span class="font-display text-display leading-none uppercase">Marea</span>
-      <span class="mt-3 text-subheading tracking-widest uppercase">Batemans Bay</span>
-    </span>
-  ) : name === "marea-logo" ? (
-    <span role="img" aria-label={a11y} data-logo-fallback class:list={["font-display text-headline leading-none uppercase", cls]}>
-      Marea
-    </span>
-  ) : name === "placeco" ? (
-    <span role="img" aria-label={a11y} data-logo-fallback class:list={["font-body text-headline font-light tracking-wide leading-none uppercase", cls]}>
-      Place\Co
+  src ? (
+    <span class:list={["block", cls]}>
+      <Image
+        src={src}
+        alt={label ?? names[name]}
+        widths={widths.length ? widths : [src.width]}
+        sizes={`${width}px`}
+        loading={priority ? "eager" : "lazy"}
+        class="block h-auto w-full"
+      />
     </span>
   ) : (
-    <span role="img" aria-label={a11y} data-logo-fallback class:list={["flex flex-col text-label font-medium uppercase leading-tight", cls]}>
-      <span>The Property</span>
-      <span>Collective</span>
-      <span class="font-light">Projects</span>
+    <span role="img" aria-label={label ?? names[name]} class:list={["font-display text-headline uppercase", cls]}>
+      Marea
     </span>
   )
 }

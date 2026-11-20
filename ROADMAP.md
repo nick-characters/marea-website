@@ -29,6 +29,9 @@
 | 19 Nov | Copy fix: removed a stray ". ." at the end of the Amenity "A balanced lifestyle" body. |
 | 19 Nov | Style guide lives at `/styleguide` (Astro ignores `_`-prefixed routes). |
 | 19 Nov | `astro check` requires TypeScript 6, so TS is pinned to ^6. |
+| 20 Nov | Full brand palette added (Marea_Palette.json). Button states: hover = 1 step lighter, press = 1 step darker (primary powder 300→200/400; submit + floating menu burgundy 400→300/500). |
+| 20 Nov | Real assets imported into the repo (`src/assets`). Amenity "rooftop" band reuses the building-exterior image; Team project square reuses the amenity closing image (client direction). Nav uses the Marea wordmark; home hero uses the primary (MAREA / BATEMANS BAY) logo. The hero arch artwork includes its own frame, so the coded border was removed. |
+| 20 Nov | Launch inputs (domain, Resend domain verification, GA4) deferred until design/build sign-off. Work continues on the `staging` preview. |
 
 ## Schedule (to hit Monday)
 | Day | Work |

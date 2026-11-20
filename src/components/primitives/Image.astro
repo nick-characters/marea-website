@@ -18,6 +18,7 @@ interface Props {
 }
 const { media, sizes = "100vw", priority = false, tone, class: cls, imgClass, ...rest } = Astro.props;
 const src = getImage(media.key);
+const focal = { top: "object-top", center: "object-center", bottom: "object-bottom" }[media.position ?? "center"];
 ---
 <div class:list={["relative overflow-hidden", cls]} {...rest}>
   {
@@ -33,7 +34,7 @@ const src = getImage(media.key);
         decoding={priority ? "sync" : "async"}
         pictureAttributes={{ class: "contents" }}
         data-media-img
-        class={["absolute inset-0 size-full object-cover", imgClass].filter(Boolean).join(" ")}
+        class={["absolute inset-0 size-full object-cover", focal, imgClass].filter(Boolean).join(" ")}
       />
     ) : (
       <Placeholder label={media.label} tone={tone} class="absolute inset-0" />

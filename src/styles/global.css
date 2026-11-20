@@ -46,17 +46,38 @@
   --drop-shadow-*: initial;
   --ease-*: initial;
 
-  /* Colour: Figma variables (color/*) */
+  /* Colour: full brand palette (Marea_Palette.json). Bases: burgundy-400, eucalyptus-300,
+     moss-300, powder-300, neutral-100. Burgundy is primary; powder/greens are secondary. */
+  --color-burgundy-100: #ecd0cd;
+  --color-burgundy-200: #c08d84;
+  --color-burgundy-300: #8a4e3f;
   --color-burgundy-400: #481f15;
-  --color-moss-300: #544c2b;
+  --color-burgundy-500: #39140f;
+  --color-burgundy-600: #290b0b;
+  --color-burgundy-700: #180507;
+  --color-eucalyptus-100: #e2e2cb;
+  --color-eucalyptus-200: #b9b998;
   --color-eucalyptus-300: #919169;
+  --color-eucalyptus-400: #6a6a4a;
+  --color-eucalyptus-500: #46462f;
+  --color-moss-100: #a29d8a;
+  --color-moss-200: #7a7459;
+  --color-moss-300: #544c2b;
+  --color-moss-400: #3b341a;
+  --color-moss-500: #231e0b;
+  --color-powder-100: #f2fbff;
   --color-powder-200: #cfe2ec;
   --color-powder-300: #b1c9d5;
+  --color-powder-400: #8c9fa9;
+  --color-powder-500: #69777f;
   --color-neutral-50: #f7f3ea;
   --color-neutral-100: #e5ddca;
+  --color-neutral-200: #cfc9b8;
   --color-neutral-300: #b6afa1;
+  --color-neutral-400: #9b9489;
   --color-neutral-500: #7f7970;
   --color-neutral-600: #645e58;
+  --color-neutral-700: #494440;
   --color-neutral-800: #2f2b28;
   --color-neutral-900: #181513;
 

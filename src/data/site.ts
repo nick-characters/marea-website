@@ -21,12 +21,22 @@ export const site = {
     {
       name: "Nathan Page",
       phone: "0499 054 888",
-      photo: { key: "team/nathan-page", alt: "Nathan Page", label: "Agent portrait: Nathan Page" },
+      photo: {
+        key: "team/nathan-page",
+        alt: "Nathan Page",
+        label: "Agent portrait: Nathan Page",
+        position: "top",
+      },
     },
     {
       name: "Liam Lagana",
       phone: "0498 441 335",
-      photo: { key: "team/liam-lagana", alt: "Liam Lagana", label: "Agent portrait: Liam Lagana" },
+      photo: {
+        key: "team/liam-lagana",
+        alt: "Liam Lagana",
+        label: "Agent portrait: Liam Lagana",
+        position: "top",
+      },
     },
   ],
   primaryPhone: "0498 441 335",
