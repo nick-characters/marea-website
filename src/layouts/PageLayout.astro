@@ -1,0 +1,22 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Footer from "@/components/ui/Footer.astro";
+import BrochureSection from "@/components/sections/BrochureSection.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  /** Every designed page ends with the brochure form; Team shows agents beside it; false for utility pages */
+  brochure?: false | "centred" | "withAgents";
+}
+const { brochure = "centred", ...seo } = Astro.props;
+---
+<BaseLayout {...seo}>
+  <slot name="hero" />
+  <main id="main">
+    <slot />
+    {brochure && <BrochureSection layout={brochure} />}
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,17 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import ImageBand from "@/components/sections/ImageBand.astro";
+import SplitFeature from "@/components/sections/SplitFeature.astro";
+import { residences as page } from "@/data/content";
+const [a, b, c] = page.splits;
+const [band1, band2] = page.bands;
+---
+<PageLayout title="Residences" description="Four bedrooms, three bathrooms, six residences on the waterfront at Batemans Bay.">
+  <PageHero slot="hero" {...page.hero} />
+  <SplitFeature split={a} />
+  <ImageBand band={band1} />
+  <SplitFeature split={b} />
+  <ImageBand band={band2} />
+  <SplitFeature split={c} />
+</PageLayout>

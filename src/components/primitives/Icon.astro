@@ -1,0 +1,27 @@
+---
+/** UI icons only (stroke uses currentColor). Brand/amenity icons come from src/assets/icons via getSvg. */
+interface Props {
+  name: "chevron" | "menu" | "close" | "arrow-up";
+  class?: string;
+  label?: string;
+}
+const { name, class: cls, label } = Astro.props;
+const paths: Record<Props["name"], { vb: string; d: string; w: number; h: number }> = {
+  chevron: { vb: "0 0 12 6", d: "M.5.5 6 5.5 11.5.5", w: 12, h: 6 },
+  menu: { vb: "0 0 28 12", d: "M0 1h28M0 11h28", w: 28, h: 12 },
+  close: { vb: "0 0 20 20", d: "m1 1 18 18M19 1 1 19", w: 20, h: 20 },
+  "arrow-up": { vb: "0 0 12 14", d: "M6 13V1M1 6l5-5 5 5", w: 12, h: 14 },
+};
+const p = paths[name];
+---
+<svg
+  viewBox={p.vb}
+  width={p.w}
+  height={p.h}
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1"
+  class:list={["shrink-0", cls]}
+  role={label ? "img" : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}><path d={p.d} /></svg>

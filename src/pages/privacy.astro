@@ -1,0 +1,48 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import Section from "@/components/primitives/Section.astro";
+import Container from "@/components/primitives/Container.astro";
+import Heading from "@/components/primitives/Heading.astro";
+import Text from "@/components/primitives/Text.astro";
+import Nav from "@/components/ui/Nav.astro";
+
+// PLACEHOLDER COPY: replace with the client's approved privacy policy before launch (see PLACEHOLDERS.md).
+const sections = [
+  {
+    h: "Who we are",
+    p: ["This website is operated on behalf of Place Co, developer of Marea, 43 Beach Road, Batemans Bay NSW, together with The Property Collective, the appointed sales agent."],
+  },
+  {
+    h: "What we collect",
+    p: ["When you request a brochure we collect your name, email address, phone number, postcode, buyer type and how you heard about Marea.", "We also use Google Analytics to understand how the website is used. Analytics data is aggregated and does not identify you personally."],
+  },
+  {
+    h: "How we use it",
+    p: ["Your details are used to send you the Marea brochure and for Place Co and The Property Collective to contact you about Marea. Your details are shared with The Property Collective and stored in its CRM to manage your enquiry."],
+  },
+  {
+    h: "Access and contact",
+    p: ["You can ask to access, correct or delete your personal information at any time by contacting The Property Collective on 0498 441 335."],
+  },
+];
+---
+<PageLayout title="Privacy Policy" brochure={false}>
+  <Section slot="hero" as="header" theme="sand">
+    <Container class="py-6 lg:py-10"><Nav /></Container>
+  </Section>
+  <Section theme="sand" space="split">
+    <Container width="narrow">
+      <div class="flex flex-col gap-12">
+        <Heading as="h1" size="title" data-split>Privacy Policy</Heading>
+        {
+          sections.map((s) => (
+            <div class="flex flex-col gap-4 text-ink" data-reveal>
+              <Heading as="h2" size="subheading" class="text-brand">{s.h}</Heading>
+              {s.p.map((p) => <Text>{p}</Text>)}
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+</PageLayout>

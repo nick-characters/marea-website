@@ -1,0 +1,26 @@
+---
+import Field from "./Field.astro";
+interface Props {
+  name: string;
+  label: string;
+  type?: "text" | "email" | "tel";
+  placeholder?: string;
+  autocomplete?: string;
+  inputmode?: "text" | "email" | "tel" | "numeric";
+  required?: boolean;
+  maxlength?: number;
+  pattern?: string;
+}
+const { name, label, type = "text", required = true, ...rest } = Astro.props;
+---
+<Field name={name} label={label}>
+  <input
+    id={`f-${name}`}
+    name={name}
+    type={type}
+    required={required}
+    aria-describedby={`f-${name}-error`}
+    class="h-10 w-full bg-field px-3 text-body-sm text-ink outline-1 outline-transparent transition-colors duration-fast placeholder:text-muted focus:outline-brand aria-invalid:outline-brand"
+    {...rest}
+  />
+</Field>

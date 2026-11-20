@@ -1,0 +1,18 @@
+---
+import { home } from "@/data/content";
+import Section from "@/components/primitives/Section.astro";
+import Container from "@/components/primitives/Container.astro";
+import Heading from "@/components/primitives/Heading.astro";
+import Text from "@/components/primitives/Text.astro";
+const { lead, statement } = home.statement;
+---
+<Section theme="moss" space="band" label="About the name">
+  <Container width="narrow">
+    <div class="flex flex-col items-center gap-8 text-center">
+      <Text size="body-sm" data-reveal>
+        {lead.map((part) => (part.italic ? <em class="italic">{part.text}</em> : part.text))}
+      </Text>
+      <Heading as="p" size="statement" data-statement>{statement}</Heading>
+    </div>
+  </Container>
+</Section>

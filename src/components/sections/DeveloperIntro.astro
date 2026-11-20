@@ -1,0 +1,25 @@
+---
+import { team } from "@/data/content";
+import Section from "@/components/primitives/Section.astro";
+import Container from "@/components/primitives/Container.astro";
+import Image from "@/components/primitives/Image.astro";
+import Logo from "@/components/primitives/Logo.astro";
+import Text from "@/components/primitives/Text.astro";
+import Nav from "@/components/ui/Nav.astro";
+const { developer } = team;
+---
+<Section as="header" theme="sand" data-hero="page">
+  <Container class="pt-6 pb-split lg:py-10" innerClass="flex flex-col gap-15">
+    <div data-hero-fade><Nav /></div>
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-20">
+      <div class="flex flex-col items-start gap-10" data-stagger>
+        <Text as="h1" size="label">{developer.label} <span class="sr-only">Place Co</span></Text>
+        <Logo name="placeco" tone="dark" width={200} class="w-50" />
+        <div class="flex flex-col gap-4 text-ink">
+          {developer.body.map((p) => <Text>{p}</Text>)}
+        </div>
+      </div>
+      <Image media={developer.image} priority data-mask sizes="(min-width: 1024px) 66vw, 100vw" class="aspect-square w-full lg:col-span-2" />
+    </div>
+  </Container>
+</Section>

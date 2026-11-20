@@ -1,0 +1,7 @@
+{
+  "name": "marea-website",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // Non-secret vars can live here; secrets via `wrangler secret put` or the Cloudflare dashboard.
+  "vars": {}
+}

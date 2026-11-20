@@ -1,0 +1,30 @@
+---
+/* Interim brochure page linked from the auto-reply email (BROCHURE_URL) until the PDF is final. */
+import PageLayout from "@/layouts/PageLayout.astro";
+import Section from "@/components/primitives/Section.astro";
+import Container from "@/components/primitives/Container.astro";
+import Heading from "@/components/primitives/Heading.astro";
+import Text from "@/components/primitives/Text.astro";
+import Button from "@/components/primitives/Button.astro";
+import Nav from "@/components/ui/Nav.astro";
+import { site, telHref } from "@/data/site";
+---
+<PageLayout title="Brochure" noindex brochure={false}>
+  <Section slot="hero" as="header" theme="sand">
+    <Container class="py-6 lg:py-10"><Nav /></Container>
+  </Section>
+  <Section theme="sand" space="band">
+    <Container width="narrow">
+      <div class="flex flex-col items-start gap-stack-lg">
+        <Heading as="h1" size="title" data-split>The brochure is almost ready</Heading>
+        <Text data-reveal>
+          The Marea brochure is being finalised. We'll email it to you the moment it's ready, and one of our agents will be in touch shortly.
+        </Text>
+        <ul class="flex flex-col gap-3" data-stagger>
+          {site.agents.map((a) => <li><Text>{a.name} · <a class="underline" href={telHref(a.phone)}>{a.phone}</a></Text></li>)}
+        </ul>
+        <div data-reveal="0.1"><Button href="/residences">Explore the residences</Button></div>
+      </div>
+    </Container>
+  </Section>
+</PageLayout>

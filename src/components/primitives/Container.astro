@@ -1,0 +1,14 @@
+---
+/** Horizontal rhythm: fluid gutter + 1280 max content width. The only place gutters are applied. */
+interface Props {
+  width?: "content" | "narrow" | "full";
+  class?: string;
+  /** Classes for the inner max-width box (e.g. flex layout that must span the full content width) */
+  innerClass?: string;
+}
+const { width = "content", class: cls, innerClass } = Astro.props;
+const max = { content: "max-w-content", narrow: "max-w-narrow", full: "" }[width];
+---
+<div class:list={["px-gutter", cls]}>
+  <div class:list={["mx-auto w-full", max, innerClass]}><slot /></div>
+</div>
