@@ -96,7 +96,7 @@ export const home = {
     { icon: "amenity-sauna", label: "Sauna Room" },
     { icon: "amenity-shower", label: "Outdoor Shower" },
     { icon: "amenity-bike", label: "Secure Bike Storage" },
-    { icon: "amenity-parking", label: "Basement Parking" },
+    { icon: "amenity-parking", label: "Secure Parking" },
     { icon: "amenity-communal", label: "Communal Areas" },
   ],
   community: {
@@ -227,9 +227,8 @@ export const amenity = {
       id: "communal",
       heading: "Communal spaces Designed to host",
       body: [
-        "Marea takes its cues from the textures, tones and movement of the bay. Intentional architectural sight lines draw the ocean into the home and expansive open-plan living flows out to an intimate balcony.",
-        "Set on the waterfront of Batemans Bay, Marea is a composition of six uniquely crafted residences.",
-        "Across three generous storeys, each four-bedroom, three-bathroom residence considers the surrounding bushland and coastal shoreline.",
+        "Cook up a feast or just unwind on the panoramic rooftop as sweeping views line the backdrop. Fully equipped with cooking, cleaning, and food preparation facilities, you can host whether there’s a reason or not.",
+        "A large communal table and multiple seating arrangements mean this level is not just a nice feature of the property, its a functional extension of your day-to-day movements.",
       ],
       cta: brochure,
       image: { key: "amenity/communal", alt: "Communal rooftop space", label: "Square: communal space" },
@@ -342,6 +341,23 @@ export const team = {
       label: "Square: Place Co project",
     },
   },
+  consultants: [
+    {
+      role: "Architect",
+      logo: "place-studio",
+      body: "Place\\Studio is an award-winning Sydney architectural practice behind residential projects including Mosman Residences and Jacaranda Residences. With in-house interior design and a tailored process from concept through to construction, the studio creates homes that look distinctive, work well every day and hold their value.",
+    },
+    {
+      role: "Engineering",
+      logo: "steel-stone",
+      body: "Structural engineering is by Steel & Stone, a respected Sydney firm with decades of experience across residential, commercial and industrial projects. Its tailored structural solutions focus on safety, compliance and long-term performance, giving residents a home built to last.",
+    },
+    {
+      role: "Services",
+      logo: "space-consulting",
+      body: "Building services engineering is by Space Consulting, a Sydney firm whose senior team brings more than 40 years of combined experience. Their engineers coordinate the mechanical, electrical, hydraulic, fire and sustainability systems so these services stay discreet, efficient and comfortable.",
+    },
+  ] as const,
   agency: {
     heading: "Sales Agent",
     body: "The Property Collective is seasoned in the NSW South Coast property market, providing seamless end-to-end buying experience.",

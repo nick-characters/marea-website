@@ -34,6 +34,7 @@
 | 20 Nov | Fix: animations were effectively instant (duration tokens emitted in seconds were read as ms). All reveals now ease properly on desktop and mobile. |
 | 20 Nov | Running text capped at 400px (`max-w-measure`; Tailwind's `max-w-prose` is 65ch) with 150% leading, incl. fine print. Footer phone replaced by a Privacy Policy link. In-page anchor scrolling is a 2s eased scroll on all devices. Page transition pinned to its own token (`--duration-page`). Logos object-contain with a small transparent margin. |
 | 20 Nov | Mobile menu rebuilt as a fixed overlay with a transform slide (no `<dialog>`/clip-path; iOS Safari rendered those inconsistently): inert background, Esc, focus management, safe-area padding. Image bands: 1440/1024 ratio capped at 80svh. Home hero: arch image first on mobile. |
+| 23 Nov | Content: Amenity "Communal spaces" copy replaced; home amenity "Basement Parking" → "Secure Parking"; Team page gains a 3-column consultants section (Place\\Studio, Steel & Stone, Space Consulting). Consultant logos supplied white-only, recoloured to neutral-900 and optically sized. |
 | 20 Nov | Launch inputs (domain, Resend domain verification, GA4) deferred until design/build sign-off. Work continues on the `staging` preview. |
 
 ## Schedule (to hit Monday)

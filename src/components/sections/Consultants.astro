@@ -1,0 +1,34 @@
+---
+/** Team page: project consultants (architect, structural, services), styled to follow DeveloperIntro. */
+import { team } from "@/data/content";
+import Section from "@/components/primitives/Section.astro";
+import Container from "@/components/primitives/Container.astro";
+import Logo from "@/components/primitives/Logo.astro";
+import Text from "@/components/primitives/Text.astro";
+
+// Optical sizing: the supplied marks have very different proportions, so each gets its own height
+// inside a shared 44px row (keeps the paragraphs aligned across columns).
+const logoHeight: Record<(typeof team.consultants)[number]["logo"], string> = {
+  "place-studio": "h-7",
+  "steel-stone": "h-11",
+  "space-consulting": "h-8",
+};
+---
+<Section theme="sand" label="Project team" class="pb-split lg:pb-20">
+  <Container>
+    <div class="rule mb-12 bg-rule lg:mb-15" aria-hidden="true"></div>
+    <ul class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-20" data-stagger>
+      {
+        team.consultants.map((c) => (
+          <li class="flex flex-col items-start gap-10">
+            <Text as="h2" size="label">{c.role}</Text>
+            <div class="flex h-11 w-full items-center">
+              <Logo name={c.logo} fit="height" width={240} class:list={[logoHeight[c.logo], "w-full"]} />
+            </div>
+            <Text class="text-ink">{c.body}</Text>
+          </li>
+        ))
+      }
+    </ul>
+  </Container>
+</Section>

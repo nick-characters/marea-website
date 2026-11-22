@@ -7,7 +7,14 @@
 import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 
-type Name = "marea-wordmark" | "marea-primary" | "placeco" | "property-collective";
+type Name =
+  | "marea-wordmark"
+  | "marea-primary"
+  | "placeco"
+  | "property-collective"
+  | "place-studio"
+  | "steel-stone"
+  | "space-consulting";
 interface Props {
   name: Name;
   tone?: "dark" | "light";
@@ -16,8 +23,10 @@ interface Props {
   priority?: boolean;
   class?: string;
   label?: string;
+  /** "width" (default): artwork fills the box width. "height": artwork fits a fixed-height box (for aligning mixed logos). */
+  fit?: "width" | "height";
 }
-const { name, tone = "dark", width = 240, priority = false, class: cls, label } = Astro.props;
+const { name, tone = "dark", width = 240, priority = false, class: cls, label, fit = "width" } = Astro.props;
 
 const files = import.meta.glob<{ default: ImageMetadata }>("/src/assets/logos/*.png", { eager: true });
 const variant: Record<Name, Record<"dark" | "light", string>> = {
@@ -25,12 +34,19 @@ const variant: Record<Name, Record<"dark" | "light", string>> = {
   "marea-primary": { dark: "marea-primary-burgundy", light: "marea-primary-cream" },
   placeco: { dark: "placeco-dark", light: "placeco-light" },
   "property-collective": { dark: "property-collective-light", light: "property-collective-light" },
+  // Consultant logos were supplied white-only; recoloured to neutral-900 for light backgrounds.
+  "place-studio": { dark: "place-studio-dark", light: "place-studio-dark" },
+  "steel-stone": { dark: "steel-stone-dark", light: "steel-stone-dark" },
+  "space-consulting": { dark: "space-consulting-dark", light: "space-consulting-dark" },
 };
 const names: Record<Name, string> = {
   "marea-wordmark": "Marea",
   "marea-primary": "Marea Batemans Bay",
   placeco: "Place Co",
   "property-collective": "The Property Collective",
+  "place-studio": "Place Studio",
+  "steel-stone": "Steel & Stone",
+  "space-consulting": "Space Consulting",
 };
 const src = files[`/src/assets/logos/${variant[name][tone]}.png`]?.default;
 const widths = [width, width * 2].filter((w) => !src || w <= src.width);
@@ -44,7 +60,7 @@ const widths = [width, width * 2].filter((w) => !src || w <= src.width);
         widths={widths.length ? widths : [src.width]}
         sizes={`${width}px`}
         loading={priority ? "eager" : "lazy"}
-        class="block h-auto w-full object-contain"
+        class:list={["block object-contain", fit === "height" ? "h-full w-auto max-w-full object-left" : "h-auto w-full"]}
       />
     </span>
   ) : (
