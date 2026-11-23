@@ -36,6 +36,7 @@
 | 20 Nov | Mobile menu rebuilt as a fixed overlay with a transform slide (no `<dialog>`/clip-path; iOS Safari rendered those inconsistently): inert background, Esc, focus management, safe-area padding. Image bands: 1440/1024 ratio capped at 80svh. Home hero: arch image first on mobile. |
 | 23 Nov | Content: Amenity "Communal spaces" copy replaced; home amenity "Basement Parking" → "Secure Parking"; Team page gains a 3-column consultants section (Place\\Studio, Steel & Stone, Space Consulting). Consultant logos supplied white-only, recoloured to neutral-900 and optically sized. |
 | 23 Nov | DESIGN-SYSTEM.md rewritten to match the build (tokens, patterns, motion, logos, Team layout, resolved gaps). Removed unused tokens (`aspect-band-tablet`, `aspect-band-mobile`, `aspect-wordmark`, `spacing-field`, `radius-arch`); menu "Download Brochure" now uses the `Button` primitive. |
+| 23 Nov | Brand favicon (M monogram) supplied: `favicon.ico` (16/32/48), `favicon-32.png`, `icon-192.png`, and a 180px `apple-touch-icon.png` on sand (iOS fills transparency with black). Interim SVG removed. |
 | 20 Nov | Launch inputs (domain, Resend domain verification, GA4) deferred until design/build sign-off. Work continues on the `staging` preview. |
 
 ## Schedule (to hit Monday)

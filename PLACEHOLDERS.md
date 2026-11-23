@@ -16,7 +16,6 @@ All supplied imagery, logos and icons are in (20 Nov, from Drive › Marea Beach
 |---|---|---|
 | Brochure PDF | Set `BROCHURE_URL` (or drop `public/marea-brochure.pdf` and point the var at it) | Interim `/brochure` holding page |
 | Social share image | `public/og.jpg`, 1200 × 630 | Missing |
-| Favicon | `public/favicon.svg` | Interim "M" monogram, replace with brand monogram |
 | Privacy policy copy | `src/pages/privacy.astro` | Placeholder copy, needs client approval |
 
 Not used: `Lowres-250305-BatemansBay-516187.jpg` (no matching slot).
