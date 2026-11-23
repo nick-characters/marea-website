@@ -1,0 +1,25 @@
+---
+/** Vertical rhythm + colour theme. Pages never set section padding or backgrounds directly. */
+export type Theme = "sand" | "burgundy" | "moss" | "powder" | "cream";
+interface Props {
+  theme?: Theme;
+  space?: "band" | "split" | "none";
+  id?: string;
+  as?: "section" | "div" | "header" | "footer";
+  label?: string;
+  class?: string;
+  [key: `data-${string}`]: unknown;
+}
+const { theme = "sand", space = "none", id, as: Tag = "section", label, class: cls, ...rest } = Astro.props;
+const themes: Record<Theme, string> = {
+  sand: "bg-sand text-brand",
+  burgundy: "bg-brand text-sand",
+  moss: "bg-moss text-cream",
+  powder: "bg-powder text-brand",
+  cream: "bg-cream text-ink",
+};
+const spaces = { band: "py-band", split: "py-split", none: "" };
+---
+<Tag id={id} aria-label={label} data-theme={theme} class:list={["relative", themes[theme], spaces[space], cls]} {...rest}>
+  <slot />
+</Tag>

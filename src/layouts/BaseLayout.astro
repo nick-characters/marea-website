@@ -1,0 +1,86 @@
+---
+import "@/styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import { PUBLIC_GA_ID } from "astro:env/client";
+import hattonUrl from "@/assets/fonts/PPHatton-Medium.woff2?url";
+import { site } from "@/data/site";
+import MenuOverlay from "@/components/ui/MenuOverlay.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+const { title, description = site.description, noindex = false } = Astro.props;
+const fullTitle = title ? `${title} | Marea Batemans Bay` : "Marea | Waterfront residences, Batemans Bay";
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/og.jpg", Astro.site);
+---
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#481f15" /><!-- token-ok: browser chrome colour must be a literal (burgundy-400) -->
+    <link rel="preload" href={hattonUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <script is:inline>
+      // Motion pre-states apply only once JS is running; a safety timer reveals content if the bundle fails.
+      (function () {
+        var d = document.documentElement;
+        d.classList.add("js");
+        setTimeout(function () { if (!window.__mareaMotion) d.classList.remove("js"); }, 3500);
+        document.addEventListener("astro:after-swap", function () { d.classList.add("js"); });
+      })();
+    </script>
+    {
+      PUBLIC_GA_ID && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GA_ID}`} />
+          <script is:inline define:vars={{ id: PUBLIC_GA_ID }}>
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () { window.dataLayer.push(arguments); };
+            window.gtag("js", new Date());
+            window.gtag("config", id);
+          </script>
+        </>
+      )
+    }
+    <ClientRouter fallback="swap" />
+  </head>
+  <body class="bg-sand text-brand">
+    <a
+      href="#main"
+      class="sr-only z-skip rounded-tl-leaf rounded-br-leaf bg-powder px-6 py-3 text-button uppercase focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+      >Skip to content</a
+    >
+    <slot />
+    <MenuOverlay />
+    <script>
+      import { destroyMotion, initMotion } from "@/lib/motion";
+      import { trackPageView } from "@/lib/analytics";
+      let first = true;
+      document.addEventListener("astro:page-load", () => {
+        initMotion();
+        (window as unknown as { __mareaMotion: boolean }).__mareaMotion = true;
+        if (!first) trackPageView();
+        first = false;
+      });
+      document.addEventListener("astro:before-swap", destroyMotion);
+    </script>
+  </body>
+</html>

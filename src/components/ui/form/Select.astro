@@ -1,0 +1,26 @@
+---
+import Field from "./Field.astro";
+import Icon from "@/components/primitives/Icon.astro";
+interface Props {
+  name: string;
+  label: string;
+  options: readonly string[];
+  required?: boolean;
+}
+const { name, label, options, required = true } = Astro.props;
+---
+<Field name={name} label={label}>
+  <div class="relative w-full">
+    <select
+      id={`f-${name}`}
+      name={name}
+      required={required}
+      aria-describedby={`f-${name}-error`}
+      class="peer h-10 w-full cursor-pointer appearance-none bg-field pr-10 pl-3 text-body-sm text-ink outline-1 outline-transparent transition-colors duration-fast invalid:text-muted focus:outline-brand aria-invalid:outline-brand"
+    >
+      <option value="" disabled selected>Select One</option>
+      {options.map((o) => <option value={o}>{o}</option>)}
+    </select>
+    <Icon name="chevron" class="pointer-events-none absolute top-1/2 right-5 -translate-y-1/2 text-ink" />
+  </div>
+</Field>

@@ -1,0 +1,18 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import ImageBand from "@/components/sections/ImageBand.astro";
+import SplitFeature from "@/components/sections/SplitFeature.astro";
+import { amenity as page } from "@/data/content";
+const [a, b, c] = page.splits;
+const [band1, band2, band3] = page.bands;
+---
+<PageLayout title="Amenity" description="Pool, sauna, cold plunge and rooftop terrace at Marea, Batemans Bay.">
+  <PageHero slot="hero" {...page.hero} />
+  <SplitFeature split={a} />
+  <ImageBand band={band1} />
+  <SplitFeature split={b} />
+  <ImageBand band={band2} />
+  <SplitFeature split={c} />
+  <ImageBand band={band3} />
+</PageLayout>

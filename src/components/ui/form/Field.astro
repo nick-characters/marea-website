@@ -1,0 +1,13 @@
+---
+/** Label + control + error message wrapper. Error text is filled by the form script or server. */
+interface Props {
+  name: string;
+  label: string;
+}
+const { name, label } = Astro.props;
+---
+<div class="flex w-full flex-col gap-2" data-field={name}>
+  <label for={`f-${name}`} class="text-label text-ink-soft uppercase">{label}</label>
+  <slot />
+  <p id={`f-${name}-error`} class="hidden text-body-sm text-brand" data-error-for={name} role="alert"></p>
+</div>

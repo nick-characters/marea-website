@@ -1,0 +1,43 @@
+---
+/**
+ * Renders a real image from src/assets/images/<key>.* when present, otherwise a Placeholder.
+ * The wrapper owns the aspect ratio; the image always fills it (object-cover).
+ */
+import { Picture } from "astro:assets";
+import { getImage, type Media } from "@/lib/media";
+import Placeholder from "./Placeholder.astro";
+
+interface Props {
+  media: Media;
+  sizes?: string;
+  priority?: boolean;
+  tone?: "light" | "dark";
+  class?: string;
+  imgClass?: string;
+  [key: `data-${string}`]: unknown;
+}
+const { media, sizes = "100vw", priority = false, tone, class: cls, imgClass, ...rest } = Astro.props;
+const src = getImage(media.key);
+const focal = { top: "object-top", center: "object-center", bottom: "object-bottom" }[media.position ?? "center"];
+---
+<div class:list={["relative overflow-hidden", cls]} {...rest}>
+  {
+    src ? (
+      <Picture
+        src={src}
+        alt={media.alt}
+        formats={["avif", "webp"]}
+        widths={[480, 768, 1080, 1440, 1920, 2560].filter((w) => w <= src.width)}
+        sizes={sizes}
+        loading={priority ? "eager" : "lazy"}
+        fetchpriority={priority ? "high" : "auto"}
+        decoding={priority ? "sync" : "async"}
+        pictureAttributes={{ class: "contents" }}
+        data-media-img
+        class={["absolute inset-0 size-full object-cover", focal, imgClass].filter(Boolean).join(" ")}
+      />
+    ) : (
+      <Placeholder label={media.label} tone={tone} class="absolute inset-0" />
+    )
+  }
+</div>

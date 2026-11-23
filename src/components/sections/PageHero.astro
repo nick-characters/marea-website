@@ -1,0 +1,25 @@
+---
+import type { Media } from "@/lib/media";
+import Section from "@/components/primitives/Section.astro";
+import Container from "@/components/primitives/Container.astro";
+import Heading from "@/components/primitives/Heading.astro";
+import Image from "@/components/primitives/Image.astro";
+import Nav from "@/components/ui/Nav.astro";
+
+interface Props {
+  title: string;
+  image: Media;
+  /** light: sand title (dark imagery). dark: burgundy title (light imagery). Nav is burgundy on both, per design. */
+  tone?: "light" | "dark";
+}
+const { title, image, tone = "dark" } = Astro.props;
+---
+<Section as="header" theme="sand" data-hero="page" class="isolate flex min-h-svh flex-col overflow-hidden">
+  <div class="absolute inset-0 -z-10" data-hero-bg>
+    <Image media={image} priority tone={tone === "light" ? "dark" : "light"} class="size-full" />
+  </div>
+  <Container class="flex flex-1 flex-col py-6 lg:py-10" innerClass="flex flex-1 flex-col justify-between gap-16">
+    <div data-hero-fade><Nav tone="dark" /></div>
+    <Heading as="h1" size="display" data-hero-title class={tone === "light" ? "text-sand" : "text-brand"}>{title}</Heading>
+  </Container>
+</Section>

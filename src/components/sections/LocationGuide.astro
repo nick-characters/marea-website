@@ -1,0 +1,43 @@
+---
+import { location } from "@/data/content";
+import { poiCategories } from "@/data/poi";
+import Section from "@/components/primitives/Section.astro";
+import Container from "@/components/primitives/Container.astro";
+import Image from "@/components/primitives/Image.astro";
+import Text from "@/components/primitives/Text.astro";
+
+let n = 0;
+const categories = poiCategories.map((c) => ({
+  title: c.title,
+  items: c.items.map((name) => ({ name, number: String(++n).padStart(2, "0") })),
+}));
+---
+<section aria-label="Map of Batemans Bay">
+  <Image media={location.map} data-mask sizes="100vw" class="aspect-map w-full" />
+</section>
+<Section theme="cream" label="Points of interest" class="py-15">
+  <Container>
+    <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+      {
+        categories.map((cat) => (
+          <div class="flex flex-col gap-7">
+            <Text as="p" size="label" class="text-ink" data-reveal>{cat.title}</Text>
+            <ol class="flex flex-col gap-5" data-stagger>
+              {cat.items.map((item) => (
+                <li class="flex items-center gap-5">
+                  <span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-moss text-label text-cream" aria-hidden="true">
+                    {item.number}
+                  </span>
+                  <Text as="span" size="body-sm" class="text-ink">
+                    <span class="sr-only">{item.number}. </span>
+                    {item.name}
+                  </Text>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+    </div>
+  </Container>
+</Section>

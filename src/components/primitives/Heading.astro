@@ -1,0 +1,19 @@
+---
+/** Type styles from Figma (Web/*). Visual size is independent of the HTML level. */
+interface Props {
+  as?: "h1" | "h2" | "h3" | "h4" | "p" | "span";
+  size?: "display" | "title" | "headline" | "subheading" | "statement" | "strong";
+  class?: string;
+  [key: `data-${string}`]: unknown;
+}
+const { as: Tag = "h2", size = "headline", class: cls, ...rest } = Astro.props;
+const sizes = {
+  display: "font-display text-display uppercase font-medium",
+  title: "font-display text-title uppercase font-medium",
+  headline: "font-display text-headline uppercase font-medium text-balance",
+  subheading: "font-display text-subheading uppercase font-medium",
+  statement: "font-display text-statement uppercase font-medium text-balance",
+  strong: "font-body text-strong",
+};
+---
+<Tag class:list={[sizes[size], cls]} {...rest}><slot /></Tag>

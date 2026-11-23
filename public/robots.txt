@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /styleguide
+Disallow: /api/
+Sitemap: https://mareabatemansbay.com.au/sitemap-index.xml

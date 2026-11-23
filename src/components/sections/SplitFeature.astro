@@ -1,0 +1,41 @@
+---
+import type { Split } from "@/data/content";
+import Section from "@/components/primitives/Section.astro";
+import Heading from "@/components/primitives/Heading.astro";
+import Text from "@/components/primitives/Text.astro";
+import Button from "@/components/primitives/Button.astro";
+import Image from "@/components/primitives/Image.astro";
+
+interface Props {
+  split: Split;
+}
+const { split } = Astro.props;
+const lines = Array.isArray(split.heading) ? split.heading : [split.heading];
+const imageRight = split.imageSide === "right";
+---
+<Section theme="sand" id={split.id}>
+  <div class="mx-auto grid max-w-frame grid-cols-1 lg:grid-cols-2">
+    <div
+      class:list={[
+        "px-gutter pt-split lg:py-20",
+        imageRight ? "lg:order-2 lg:pr-10 lg:pl-0" : "lg:pr-0 lg:pl-10",
+      ]}
+    >
+      <Image
+        media={split.image}
+        data-mask
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        class="aspect-square w-full"
+      />
+    </div>
+    <div class="flex flex-col justify-center gap-stack-lg px-gutter py-split lg:px-20 lg:py-15">
+      <Heading data-split>
+        {lines.map((line, i) => (i < lines.length - 1 ? <>{line}<br /></> : line))}
+      </Heading>
+      <div class="flex max-w-measure flex-col gap-4" data-reveal>
+        {split.body.map((p) => <Text>{p}</Text>)}
+      </div>
+      <div data-reveal="0.1"><Button href={split.cta.href}>{split.cta.label}</Button></div>
+    </div>
+  </div>
+</Section>
