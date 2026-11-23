@@ -8,6 +8,7 @@
  */
 import { site } from "@/data/site";
 import Icon from "@/components/primitives/Icon.astro";
+import Button from "@/components/primitives/Button.astro";
 import Logo from "@/components/primitives/Logo.astro";
 import Text from "@/components/primitives/Text.astro";
 ---
@@ -51,7 +52,7 @@ import Text from "@/components/primitives/Text.astro";
       }
     </ul>
     <div class="menu-item flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between" style="--i: 5">
-      <a href="#brochure" data-menu-link class="w-fit rounded-tl-leaf rounded-br-leaf bg-powder-300 px-6 py-3 text-button text-brand uppercase transition-colors duration-fast hover:bg-powder-200 active:bg-powder-400">Download Brochure</a>
+      <Button href="#brochure" data-menu-link class="w-fit">Download Brochure</Button>
       <Text size="label" class="text-neutral-300">{site.address.short}</Text>
     </div>
   </div>
